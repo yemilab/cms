@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
+    'wagtailfontawesome',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -69,9 +70,7 @@ ROOT_URLCONF = 'cupweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(PROJECT_DIR, 'templates'),
-        ],
+        'DIRS': ['templates', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
