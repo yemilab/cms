@@ -67,10 +67,10 @@ class PresentationPage(Page):
     ]
 
     subpage_types = [ ]
-    parent_page_types = ['PresentationIndexPage', ]
+    parent_page_types = ['PresentationsIndexPage', ]
 
 
-class PresentationIndexPage(Page):
+class PresentationsIndexPage(Page):
     introduction = models.TextField(
         help_text='Text to describe the page',
         blank=True)
@@ -80,7 +80,7 @@ class PresentationIndexPage(Page):
     ]
 
     subpage_types = ['PresentationPage', ]
-    parent_page_types = ['PublicationIndexPage', ]
+    parent_page_types = ['PublicationsIndexPage', ]
 
     def get_presentations(self):
         return PresentationPage.objects.live().descendant_of(
@@ -101,13 +101,13 @@ class PresentationIndexPage(Page):
         return pages
 
     def get_context(self, request):
-        context = super(PresentationIndexPage, self).get_context(request)
+        context = super(PresentationsIndexPage, self).get_context(request)
         presentations = self.paginate(request, self.get_presentations())
         context['presentations'] = presentations
         return context
 
 
-class PublicationIndexPage(Page):
+class PublicationsIndexPage(Page):
     introduction = models.TextField(
         help_text='Text to describe the page',
         blank=True)
@@ -116,4 +116,4 @@ class PublicationIndexPage(Page):
         FieldPanel('introduction', classname="full"),
     ]
 
-    subpage_types = ['PresentationIndexPage', ]
+    subpage_types = ['PresentationsIndexPage', ]
