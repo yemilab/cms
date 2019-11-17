@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ page.title }}</h1>
+                <p>{{ page.introduction}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+        {% for presentation in presentations %}
+            <div class="col-xs-12 col-md-6">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-7">
+                        <a href="{% pageurl presentation %}">
+                            <h2>{{ presentation.title }}</h2>
+                        </a>
+                        <ul>
+                            <li><span>Date</span> {{ presentation.date }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    {% if presentations.paginator.count > 1 %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                {% include "includes/pagination.html" with subpages=presentatios %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}
