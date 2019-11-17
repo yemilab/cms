@@ -46,7 +46,7 @@ class Meeting(models.Model):
 
 
 class PresentationPage(Page):
-    date = models.DateField("Presentation data")
+    date = models.DateField("Presentation date")
     abstract = RichTextField(blank=True)
     tags = ClusterTaggableManager(through=PresentationPageTag, blank=True)
     meeting = models.ForeignKey(
@@ -66,7 +66,8 @@ class PresentationPage(Page):
         FieldPanel('abstract', classname="full")
     ]
 
-    parent_page_types = ['PresentationIndexPage']
+    subpage_types = [ ]
+    parent_page_types = ['PresentationIndexPage', ]
 
 
 class PresentationIndexPage(Page):
@@ -78,7 +79,8 @@ class PresentationIndexPage(Page):
         FieldPanel('introduction', classname="full"),
     ]
 
-    subpage_types = ['PresentationPage']
+    subpage_types = ['PresentationPage', ]
+    parent_page_types = ['PublicationIndexPage', ]
 
     def get_presentations(self):
         return PresentationPage.objects.live().descendant_of(
@@ -103,3 +105,15 @@ class PresentationIndexPage(Page):
         presentations = self.paginate(request, self.get_presentations())
         context['presentations'] = presentations
         return context
+
+
+class PublicationIndexPage(Page):
+    introduction = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('introduction', classname="full"),
+    ]
+
+    subpage_types = ['PresentationIndexPage', ]
