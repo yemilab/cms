@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from modelcluster.fields import ParentalKey
 from modelcluster.contrib.taggit import ClusterTaggableManager
@@ -37,10 +38,6 @@ class Meeting(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
 
-    panels = [
-        FieldPanel('name'),
-    ]
-
     def __str__(self):
         return self.name
 
@@ -68,3 +65,41 @@ class PresentationPage(Page):
         FieldPanel('tags'),
         FieldPanel('abstract', classname="full")
     ]
+
+    parent_page_types = ['PresentationIndexPage']
+
+
+class PresentationIndexPage(Page):
+    introduction = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('introduction', classname="full"),
+    ]
+
+    subpage_types = ['PresentationPage']
+
+    def get_presentations(self):
+        return PresentationPage.objects.live().descendant_of(
+            self).order_by('-date')
+
+    def children(self):
+        return self.get_children().specific().live()
+
+    def paginate(self, request, *args):
+        page = request.GET.get('page')
+        paginator = Paginator(self.get_presentations(), 12)
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+        return pages
+
+    def get_context(self, request):
+        context = super(PresentationIndexPage, self).get_context(request)
+        presentations = self.paginate(request, self.get_presentations())
+        context['presentations'] = presentations
+        return context
