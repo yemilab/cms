@@ -13,6 +13,8 @@ media/
 common/CACHE
 cupweb/settings/production.py
 db.sqlite3
+node_modules/
+static_compiled/
 __pycache__
 .vagrant/
 /.vagrant/
