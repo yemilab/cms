@@ -15,6 +15,7 @@ cupweb/settings/production.py
 db.sqlite3
 node_modules/
 static_compiled/
+vendor/
 __pycache__
 .vagrant/
 /.vagrant/
