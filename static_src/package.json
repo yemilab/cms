@@ -6,7 +6,7 @@
   "license": "MIT",
   "config": {
     "src_css": "sass",
-    "src_img": "images",
+    "src_img": "img",
     "src_vendor": "vendor",
     "dest_img": "../static_compiled/img",
     "dest_vendor": "../static_compiled/vendor",
