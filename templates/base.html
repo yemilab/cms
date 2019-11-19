@@ -6,37 +6,29 @@
 
 <body class="{% block body_class %}template-{{ self.get_verbose_name|slugify }}{% endblock %}">
 {% wagtailuserbar %}
-
-{% block header %}
+<div class="site" id="page">
+    {% block header %}
     {# Header contains the main_navigation block #}
     {% include "includes/header.html" with parent=site_root calling_page=self %}
-{% endblock header %}
+    {% endblock header %}
 
-{% block head-extra %}
-{% endblock head-extra %}
+    {% block head-extra %}
+    {% endblock head-extra %}
 
-{% block messages %}
-    {% include "includes/messages.html" %}
-{% endblock messages %}
+    {% block messages %}
+        {% include "includes/messages.html" %}
+    {% endblock messages %}
 
+    <main role="main">
+        {% block content %}
+        {% endblock content %}
+    </main>
 
-<main role="main">
-    {% block content %}
-    {% endblock content %}
-</main>
-
-    <hr>
-
-    <!-- Footer -->
-    <footer>
-        {% include "includes/footer.html" %}
-    </footer>
-
+    {% include "includes/footer.html" %}
+</div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     {% load static %}
     <script src="{% static 'vendor/js/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/js/bootstrap.min.js' %}"></script>
-
 </body>
-
 </html>
