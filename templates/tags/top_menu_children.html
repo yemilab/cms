@@ -2,8 +2,11 @@
 
 <ul class="sub-menu">
   {% for child in menuitems_children %}
-    <li class="menu-item {{ menuitem.title|lower|cut:' ' }}{% if menuitem.active %} active{% endif %}{% if menuitem.show_dropdown %} menu-item-has-children{% endif %}">
-        <a href="{% pageurl child %}">{{ child.title }}</a>
+    <li class="menu-item {% if menuitem.active %} active{% endif %}{% if menuitem.show_dropdown %} menu-item-has-children{% endif %}">
+      <a href="{% pageurl child %}">{{ child.title }}</a>
+      {% if child.has_dropdown %}
+        {% top_menu_children parent=child %}
+      {% endif %}
     </li>
   {% endfor %}
 </ul>
