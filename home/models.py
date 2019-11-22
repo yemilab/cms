@@ -70,3 +70,9 @@ class HomePage(Page):
             'home_homeslider_relationship', label="Slider(s)",
             panels=None, min_num=1),
     ]
+
+    def sliders(self):
+        sliders = [
+            n.homeslider for n in self.home_homeslider_relationship.all()
+        ]
+        return sliders

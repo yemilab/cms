@@ -1,2 +1,88 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+
+{% block content %}
+<div id="home-slider" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+    {% for slider in page.sliders %}
+    {% image slider.cover fill-1920x960 as image %}
+    <div class="carousel-item active" style="background-image:url('{{ image.url }}');">
+      <div class="carousel-caption d-md-block">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <h3>News</h3>
+              <h1>First result of annual modulation search has been published in Phys. Rev. Lett.</h1>
+              <p class="btn-group"><a href="https://cupweb.ibs.re.kr/news/2019/07/first-result-of-annual-modulation-search-has-been-published-in-phys-rev-lett/" class="btn btn-light">READ MORE</a></p>
+            </div>
+          </div>					
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <a class="carousel-control-prev" href="#home-slider" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#home-slider" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+<section id="service">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2 col-4">
+          <div class="item">
+            <a href="https://cupweb.ibs.re.kr/calendar/">
+              <img src="{% static 'img/ic_cal.png' %}" alt="">
+              <h5>Calendar</h5>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-2 col-4">
+          <div class="item">
+            <a href="https://cupweb.ibs.re.kr/faq/">
+              <img src="{% static 'img/ic_faq.png' %}" alt="">
+              <h5>FAQ</h5>
+            </a>
+          </div>				
+        </div>
+        <div class="col-md-2 col-4">
+          <div class="item">
+            <a href="https://cupweb.ibs.re.kr/open-data/">
+              <img src="{% static 'img/ic_data.png' %}" alt="">
+              <h5>Open Data</h5>
+            </a>
+          </div>				
+        </div>
+        <div class="col-md-2 col-4">
+          <div class="item">
+            <a href="https://cupweb.ibs.re.kr/about-center/for-visitors/request-visit/">
+              <img src="{% static 'img/ic_visit.png' %}" alt="">
+              <h5>Request Visit</h5>
+            </a>
+          </div>				
+        </div>
+        <div class="col-md-2 col-4">
+          <div class="item">
+            <a href="https://cupweb.ibs.re.kr/facilities-and-equipment/equipment-enquiry/">
+              <img src="{% static 'img/ic_reserve.png' %}" alt="">
+              <h5>Equipment Enquiry</h5>
+            </a>
+          </div>				
+        </div>
+        <div class="col-md-2 col-4">
+          <div class="item">
+            <a href="https://cupweb.ibs.re.kr/job">
+              <img src="{% static 'img/ic_careers.png' %}" alt="">
+              <h5>Careers</h5>
+            </a>
+          </div>				
+        </div>
+      </div>
+    </div>	
+</section>
+
+{% endblock content %}

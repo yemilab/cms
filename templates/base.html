@@ -4,7 +4,7 @@
     {% include "includes/head.html" %}
 {% endblock head %}
 
-<body class="{% block body_class %}template-{{ self.get_verbose_name|slugify }}{% endblock %}">
+<body class="{% block body_class %}template-{{ self.get_verbose_name|slugify }}{% endblock %} home">
 {% wagtailuserbar %}
 <div class="site" id="page">
     {% block header %}
@@ -19,10 +19,8 @@
         {% include "includes/messages.html" %}
     {% endblock messages %}
 
-    <main role="main">
-        {% block content %}
-        {% endblock content %}
-    </main>
+    {% block content %}
+    {% endblock content %}
 
     {% include "includes/footer.html" %}
 </div>
