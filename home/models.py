@@ -79,3 +79,6 @@ class HomePage(Page):
 
     def news(self):
         return ['', '', '']
+
+    def publications(self):
+        return ['', '', '']
