@@ -3,19 +3,10 @@
 <div id="wrapper-navbar" itemscope itemtype="http://schema.org/WebSite">
     <a class="skip-link sr-only sr-only-focusable" href="#content">Skip to content</a>
     {% block main_navigation %}
-    <nav class="navbar fixed-top main-navigation" id="site-navigation">
-        <div class="container">
-            <a class="navbar-brand" rel="home" href="/" title="Center for Underground Physics" itemprop="url">
-                <img src="{% static 'img/logo.png' %}">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-             </button>
-             <button class="menu-toggle ml-auto" aria-controls="primary-menu" aria-expanded="false"><span class="fa fa-bars"></span></button> 
-            {# main_menu is defined in base/templatetags/navigation_tags.py #}
-            {% get_site_root as site_root %}
-            {% top_menu parent=site_root calling_page=self %}
-        </div>
+      {# main_menu is defined in base/templatetags/navigation_tags.py #}
+      {% get_site_root as site_root %}
+      {% top_menu parent=site_root calling_page=self %}
+    </div>
     </nav>
     {% endblock %}
 </div>

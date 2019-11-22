@@ -1,15 +1,25 @@
-{% load navigation_tags wagtailcore_tags %}
+{% load static navigation_tags wagtailcore_tags %}
 {% get_site_root as site_root %}
-<div class="menu-primary-menu-container">
-    <ul id="primary-menu" class="menu">
-    {% for menuitem in menuitems %}
-    <li class="menu-item {{ menuitem.title|lower|cut:' ' }}{% if menuitem.active %} active{% endif %}{% if menuitem.show_dropdown %} menu-item-has-children{% endif %}">
-        <a href="{% pageurl menuitem %}" role="menuitem">{{ menuitem.title }}</a>
-        {% if menuitem.show_dropdown %}
+<nav class="navbar fixed-top main-navigation" id="site-navigation">
+  <div class="container">
+    <a class="navbar-brand" rel="home" href="/" title="Center for Underground Physics" itemprop="url">
+      <img src="{% static 'img/logo.png' %}">
+    </a>
+    <button class="menu-toggle ml-auto" aria-controls="primary-menu" aria-expanded="false">
+        <span class="fa fa-bars"></span>
+    </button> 
+    <div class="menu-primary-menu-container">
+      <ul id="primary-menu" class="menu nav-menu" aria-expanded="false">
+        {% for menuitem in menuitems %}
+        <li class="menu-item  {{ menuitem.title|lower|cut:' ' }}{% if menuitem.active %} active{% endif %}{% if menuitem.show_dropdown %} menu-item-has-children{% endif %}">
+          <a href="{% pageurl menuitem %}" role="menuitem">{{ menuitem.title }}</a>
+          {% if menuitem.show_dropdown %}
             {% top_menu_children parent=menuitem %}
             {# Used to display child menu items #}
-        {% endif %}
-    </li>
-  {% endfor %}  
-  </ul>
-</div>
+          {% endif %}
+        </li>
+        {% endfor %}  
+      </ul>
+    </div>
+  </div>
+</nav>
