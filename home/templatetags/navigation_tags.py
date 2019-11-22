@@ -72,3 +72,12 @@ def top_menu_children(context, parent, calling_page=None):
         # required by the pageurl tag that we want to use within this template
         'request': context['request'],
     }
+
+@register.inclusion_tag('tags/sub_menu.html', takes_context=True)
+def sub_menu(context):
+    self = context.get('self')
+    current_section = Page.objects.ancestor_of(self).child_of(context['request'].site.root_page).first()
+    return {
+        'current_section': current_section,
+        'request': context['request'],
+    }
