@@ -9,6 +9,7 @@ from wagtail.admin.edit_handlers import (
     MultiFieldPanel,
     InlinePanel,
 )
+from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page, Orderable
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
@@ -35,6 +36,18 @@ class People(ClusterableModel):
     class Meta:
         verbose_name = 'Person'
         verbose_name_plural = 'People'
+
+
+class StandardPage(Page):
+    introduction = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+    body = RichTextField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel('introduction', classname="full"),
+        FieldPanel('body', classname='full'),
+    ]
 
 
 @register_snippet
