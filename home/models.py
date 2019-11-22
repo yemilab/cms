@@ -76,3 +76,6 @@ class HomePage(Page):
             n.homeslider for n in self.home_homeslider_relationship.all()
         ]
         return sliders
+
+    def news(self):
+        return ['', '', '']
