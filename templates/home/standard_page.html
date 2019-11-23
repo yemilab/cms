@@ -2,5 +2,5 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
-<p>Hello</p>
+<p>{{ page.body|safe }}</p>
 {% endblock content %}
