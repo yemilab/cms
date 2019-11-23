@@ -52,6 +52,7 @@ class StandardPage(Page):
 
 @register_snippet
 class HomeSlider(ClusterableModel):
+    title = models.CharField(max_length=250)
     cover = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -61,8 +62,16 @@ class HomeSlider(ClusterableModel):
     )
 
     panels = [
+        FieldPanel('title'),
         ImageChooserPanel('cover'),
     ]
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name = 'Home slider'
+        verbose_name_plural = 'Home sliders'
 
 
 class HomeHomeSliderRelationship(Orderable, models.Model):
