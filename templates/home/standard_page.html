@@ -3,24 +3,26 @@
 
 {% block content %}
 <div id="page-header" >
-			<div class="col-md-12">
-        <h1>{{ self.title }}</h1>
-			</div>		
-		</div>
-	</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>{% get_current_section_page_title %}</h1>
+      </div>    
+    </div>
+  </div>
 </div>
 <main id="main">
-	<div class="container" >
-		<div class="row">
-          <div class="col-md-3" id="left-sidebar" role="complementary">
-          {% sub_menu %}
-          </div><!-- #left-sidebar -->
-		  <div class="col-md-9 content-area" id="primary">
-            <div class="page-title">
-			  <h2>Introduction</h2>
-			</div>
-		</div><!-- #primary -->
-	  </div><!-- .row -->
-	</div><!-- #content -->
+  <div class="container" >
+    <div class="row">
+      <div class="col-md-3" id="left-sidebar" role="complementary">
+      {% sub_menu %}
+      </div><!-- #left-sidebar -->
+      <div class="col-md-9 content-area" id="primary">
+        <div class="page-title">
+          <h2>{{ self.title }}</h2>
+        </div>
+      </div><!-- #primary -->
+    </div><!-- .row -->
+  </div><!-- #content -->
 </main><!-- #main -->
 {% endblock content %}
