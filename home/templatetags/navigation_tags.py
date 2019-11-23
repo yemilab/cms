@@ -78,6 +78,8 @@ def sub_menu(context, calling_page=None):
     self = context.get('self')
     root_page = get_site_root(context)
     current_section_page = Page.objects.ancestor_of(self).child_of(root_page).first()
+    if current_section_page == None:
+        current_section_page = self
     menuitems = current_section_page.get_children().live().in_menu()
     for menuitem in menuitems:
         menuitem.show_dropdown = has_menu_children(menuitem)
