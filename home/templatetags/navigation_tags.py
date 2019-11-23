@@ -15,6 +15,16 @@ def get_site_root(context):
     return context['request'].site.root_page
 
 
+@register.simple_tag(takes_context=True)
+def get_current_section_page_title(context):
+    self = context.get('self')
+    root_page = get_site_root(context)
+    current_section_page = Page.objects.ancestor_of(self).child_of(root_page).first()
+    if current_section_page == None:
+        current_section_page = self
+    return current_section_page.title
+
+
 def has_menu_children(page):
     # This is used by the top_menu property
     # get_children is a Treebeard API thing
