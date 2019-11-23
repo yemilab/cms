@@ -74,10 +74,19 @@ def top_menu_children(context, parent, calling_page=None):
     }
 
 @register.inclusion_tag('tags/sub_menu.html', takes_context=True)
-def sub_menu(context):
+def sub_menu(context, calling_page=None):
     self = context.get('self')
-    current_section = Page.objects.ancestor_of(self).child_of(context['request'].site.root_page).first()
+    root_page = get_site_root(context)
+    current_section_page = Page.objects.ancestor_of(self).child_of(root_page).first()
+    menuitems = current_section_page.get_children().live().in_menu()
+    for menuitem in menuitems:
+        menuitem.show_dropdown = has_menu_children(menuitem)
+        menuitem.active = (calling_page.url_path.startswith(menuitem.url_path)
+                           if calling_page else False)
+        menuitem.children = menuitem.get_children().live().in_menu()
     return {
-        'current_section': current_section,
+        'calling_page': calling_page,
+        'menuitems': menuitems,
+        'current_section_page': current_section_page,
         'request': context['request'],
     }

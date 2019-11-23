@@ -1,1 +1,23 @@
-<p>{{ current_section }}</p>
+{% load navigation_tags wagtailcore_tags %}
+
+<aside>
+<h3>{{ current_section_page.title }}</h3>
+<div class="menu-about-center-container">
+  <ul id="menu-about-center" class="menu">
+  {% for menuitem in menuitems %}
+  <li class="menu-item {% if menuitem.active %} active{% endif %}{% if menuitem.show_dropdown %} menu-item-has-children{% endif %}">
+    <a href="{% pageurl menuitem %}" role="menuitem">{{ menuitem.title }}</a>
+    {% if menuitem.show_dropdown %}
+    <ul class="sub-menu">
+      {% for child in menuitem.children %}
+      <li class="menu-item {% if menuitem.active %} active{% endif %}">
+        <a href="{% pageurl child %}" role="menuitem">{{ child.title }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </li>
+  {% endfor %}
+  </ul>
+</div>
+</aside> 
