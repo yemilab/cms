@@ -5,6 +5,7 @@
     <li class="menu-item {% if menuitem.active %} active{% endif %}{% if menuitem.show_dropdown %} menu-item-has-children{% endif %}">
       <a href="{% pageurl child %}">{{ child.title }}</a>
       {% if child.has_dropdown %}
+         {# recursive call TODO: please stop if depth > 2 #}
         {% top_menu_children parent=child %}
       {% endif %}
     </li>
