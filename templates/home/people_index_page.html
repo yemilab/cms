@@ -1,0 +1,10 @@
+{% extends "content.html" %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+
+{% block content %}
+<ul>
+  {% for member in page.members %}
+  <li>{{ member }}</li>
+  {% endfor %}    
+</ul>
+{% endblock content %}

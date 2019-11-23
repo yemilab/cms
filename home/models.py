@@ -38,6 +38,29 @@ class People(ClusterableModel):
         verbose_name_plural = 'People'
 
 
+class PeopleRelationship(Orderable, models.Model):
+    page = ParentalKey(
+        'PeopleIndexPage', related_name='indexpage_person_relationship', on_delete=models.CASCADE
+    )
+    people = models.ForeignKey(
+        'People', related_name='person_indexpage_relationship', on_delete=models.CASCADE
+    )
+    panels = [
+        SnippetChooserPanel('people')
+    ]
+
+
+class PeopleIndexPage(Page):
+    content_panels = Page.content_panels + [
+        InlinePanel(
+            'indexpage_person_relationship', label="Members(s)",
+            panels=None, min_num=1),
+    ]
+
+    def members(self):
+        return [ n.people for n in self.indexpage_person_relationship.all() ]
+
+
 class StandardPage(Page):
     introduction = models.TextField(
         help_text='Text to describe the page',
