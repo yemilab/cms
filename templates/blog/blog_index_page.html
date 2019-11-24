@@ -1,0 +1,31 @@
+{% extends "content.html" %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+
+{% block content %}
+{% if posts %}
+  {% for blog in posts %}
+  <article class="row list-item loop-item">
+  	<div class="col-md-5 image">
+      {% image blog.image fill-850x450-c50 as image %}
+      <img src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" class="" />
+  	</div>
+  	<div class="col-md-7 text">
+  		<h5 class="entry-title">
+        <a href="{% pageurl blog %}">{{ blog.title }}</a> 
+  		</h5>
+  		<p>{{ blog.introduction|truncatewords:15 }}</p>
+  		<p class="meta"> 
+        {% if blog.date_published %}
+        <span class="date">{{ blog.date_published }}</span>
+        {% endif %}
+  			<span>by 
+        {% for author in blog.authors %}
+          {{ author }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+  			</span>
+  		</p>
+  	</div>
+  </article><!-- #post-## -->
+  {% endfor %}
+{% endif %}
+{% endblock content %}
