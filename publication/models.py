@@ -233,3 +233,81 @@ class PapersIndexPage(Page):
         papers = self.paginate(request, self.get_papers())
         context['papers'] = papers
         return context
+
+
+class ThesisPeopleRelationship(Orderable, models.Model):
+    page = ParentalKey(
+        'ThesisPage', related_name='thesis_person_relationship', on_delete=models.CASCADE
+    )
+    author = models.ForeignKey(
+        'home.People', related_name='person_thesis_relationship', on_delete=models.CASCADE
+    )
+    panels = [
+        SnippetChooserPanel('author')
+    ]
+
+
+class ThesisPageTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'ThesisPage',
+        related_name='tagged_items',
+        on_delete=models.CASCADE
+    )
+
+
+class ThesisPage(Page):
+    publisher = models.CharField(max_length=250)
+    advisor = models.CharField(max_length=250, blank=True)
+    date = models.DateField("Publication date")
+    abstract = RichTextField(blank=True)
+    tags = ClusterTaggableManager(through=ThesisPageTag, blank=True)
+
+    content_panels = Page.content_panels + [
+        InlinePanel(
+            'thesis_person_relationship', label="Author",
+            panels=None, min_num=1, max_num=1),
+        FieldPanel('publisher'),
+        FieldPanel('advisor'),
+        FieldPanel('date'),
+        FieldPanel('abstract', classname="full"),
+        FieldPanel('tags'),
+    ]
+
+    subpage_types = [ ]
+    parent_page_types = ['PapersIndexPage', ]
+
+
+class ThesesIndexPage(Page):
+    introduction = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('introduction', classname="full"),
+    ]
+
+    subpage_types = ['ThesisPage', ]
+    parent_page_types = ['home.SectionPage', ]
+
+    def get_theses(self):
+        return ThesisPage.objects.live().descendant_of(self).order_by('-date')
+
+    def children(self):
+        return self.get_children().specific().live()
+
+    def paginate(self, request, *args):
+        page = request.GET.get('page')
+        paginator = Paginator(self.get_theses(), 12)
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+        return pages
+
+    def get_context(self, request):
+        context = super(ThesesIndexPage, self).get_context(request)
+        papers = self.paginate(request, self.get_papers())
+        context['papers'] = papers
+        return context
