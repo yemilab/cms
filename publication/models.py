@@ -79,12 +79,14 @@ class PresentationPage(Page):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
+        related_name='+',
     )
     collaboration = models.ForeignKey(
         'publication.Collaboration',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
+        related_name='+',
     )
 
     content_panels = Page.content_panels + [
@@ -164,6 +166,7 @@ class PaperPage(Page):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
+        related_name='+',
     )
     date = models.DateField("Presentation date")
     journal = models.ForeignKey(
@@ -171,6 +174,7 @@ class PaperPage(Page):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
+        related_name='+',
     )
     page = models.CharField(max_length=100, blank=True)
     volume = models.CharField(max_length=100, blank=True)
@@ -256,6 +260,9 @@ class ThesisPageTag(TaggedItemBase):
 
 
 class ThesisPage(Page):
+    author = models.ForeignKey(
+        'home.People', related_name='+', on_delete=models.PROTECT
+    )
     publisher = models.CharField(max_length=250)
     advisor = models.CharField(max_length=250, blank=True)
     date = models.DateField("Publication date")
@@ -263,9 +270,7 @@ class ThesisPage(Page):
     tags = ClusterTaggableManager(through=ThesisPageTag, blank=True)
 
     content_panels = Page.content_panels + [
-        InlinePanel(
-            'thesis_person_relationship', label="Author",
-            panels=None, min_num=1, max_num=1),
+        SnippetChooserPanel('author'),
         FieldPanel('publisher'),
         FieldPanel('advisor'),
         FieldPanel('date'),
@@ -274,7 +279,7 @@ class ThesisPage(Page):
     ]
 
     subpage_types = [ ]
-    parent_page_types = ['PapersIndexPage', ]
+    parent_page_types = ['ThesesIndexPage', ]
 
 
 class ThesesIndexPage(Page):
