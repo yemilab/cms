@@ -73,6 +73,20 @@ class StandardPage(Page):
     ]
 
 
+class SectionPage(Page):
+    introduction = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+    body = RichTextField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel('introduction', classname="full"),
+        FieldPanel('body', classname='full'),
+    ]
+
+    parent_page_types = ['HomePage', ]
+
+
 @register_snippet
 class HomeSlider(ClusterableModel):
     title = models.CharField(max_length=250)
@@ -115,6 +129,8 @@ class HomePage(Page):
             'home_homeslider_relationship', label="Slider(s)",
             panels=None, min_num=1),
     ]
+
+    subpage_types = ['SectionPage', ]
 
     def sliders(self):
         sliders = [

@@ -111,7 +111,7 @@ class PresentationsIndexPage(Page):
     ]
 
     subpage_types = ['PresentationPage', ]
-    parent_page_types = ['PublicationsIndexPage', ]
+    parent_page_types = ['SectionPage', ]
 
     def get_presentations(self):
         return PresentationPage.objects.live().descendant_of(self).order_by('-date')
@@ -209,7 +209,7 @@ class PapersIndexPage(Page):
     ]
 
     subpage_types = ['PaperPage', ]
-    parent_page_types = ['PublicationsIndexPage', ]
+    parent_page_types = ['SectionPage', ]
 
     def get_papers(self):
         return PaperPage.objects.live().descendant_of(self).order_by('-date')
@@ -233,15 +233,3 @@ class PapersIndexPage(Page):
         papers = self.paginate(request, self.get_papers())
         context['papers'] = papers
         return context
-
-
-class PublicationsIndexPage(Page):
-    introduction = models.TextField(
-        help_text='Text to describe the page',
-        blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
-    ]
-
-    subpage_types = ['PresentationsIndexPage', 'PapersIndexPage']
