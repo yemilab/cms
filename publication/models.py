@@ -111,7 +111,7 @@ class PresentationsIndexPage(Page):
     ]
 
     subpage_types = ['PresentationPage', ]
-    parent_page_types = ['SectionPage', ]
+    parent_page_types = ['home.SectionPage', ]
 
     def get_presentations(self):
         return PresentationPage.objects.live().descendant_of(self).order_by('-date')
@@ -209,7 +209,7 @@ class PapersIndexPage(Page):
     ]
 
     subpage_types = ['PaperPage', ]
-    parent_page_types = ['SectionPage', ]
+    parent_page_types = ['home.SectionPage', ]
 
     def get_papers(self):
         return PaperPage.objects.live().descendant_of(self).order_by('-date')
