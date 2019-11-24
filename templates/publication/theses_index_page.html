@@ -2,8 +2,8 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
-{% if presentations %}
-  {% for presentation in presentations %}
+{% if theses %}
+  {% for thesis in theses %}
   <article class="row list-item loop-item">
     <div class="col-md-4 image">
       <div class="image">
@@ -12,20 +12,20 @@
     <div class="col-md-8">
       <div class="text">
         <h5 class="entry-title">
-          <a href="{% pageurl presentation %}">{{ presentation.title }}</a> 
+          <a href="{% pageurl thesis %}">{{ thesis.title }}</a> 
         </h5>
         <p class="meta"> 
-          <span class="date">{{ presentation.date }}</span> <span>by {{ presentation.author }}</span>
+          <span class="date">{{ thesis.date }}</span> <span>by {{ thesis.author }}</span>
         </p>
       </div>      
     </div>
   </article>
   {% endfor %}
-  {% if presentations.paginator.count > 1 %}
+  {% if theses.paginator.count > 1 %}
   <div class="container">
       <div class="row">
           <div class="col-md-12">
-          {% include "includes/pagination.html" with subpages=presentations %}
+          {% include "includes/pagination.html" with subpages=theses %}
           </div>
       </div>
   </div>

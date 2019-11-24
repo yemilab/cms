@@ -313,6 +313,6 @@ class ThesesIndexPage(Page):
 
     def get_context(self, request):
         context = super(ThesesIndexPage, self).get_context(request)
-        papers = self.paginate(request, self.get_papers())
-        context['papers'] = papers
+        theses = self.paginate(request, self.get_theses())
+        context['theses'] = theses
         return context
