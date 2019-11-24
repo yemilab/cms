@@ -17,7 +17,7 @@ from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
 
 @register_snippet
-class People(ClusterableModel):
+class Person(ClusterableModel):
     first_name = models.CharField("First name", max_length=254)
     last_name = models.CharField("Last name", max_length=254)
 
@@ -38,27 +38,27 @@ class People(ClusterableModel):
         verbose_name_plural = 'People'
 
 
-class PeopleRelationship(Orderable, models.Model):
+class PersonPeopleIndexRelationship(Orderable, models.Model):
     page = ParentalKey(
-        'PeopleIndexPage', related_name='indexpage_person_relationship', on_delete=models.CASCADE
+        'PeopleIndexPage', related_name='peopleindex_person_relationship', on_delete=models.CASCADE
     )
-    people = models.ForeignKey(
-        'People', related_name='person_indexpage_relationship', on_delete=models.CASCADE
+    person = models.ForeignKey(
+        'Person', related_name='person_peopleindex_relationship', on_delete=models.CASCADE
     )
     panels = [
-        SnippetChooserPanel('people')
+        SnippetChooserPanel('person')
     ]
 
 
 class PeopleIndexPage(Page):
     content_panels = Page.content_panels + [
         InlinePanel(
-            'indexpage_person_relationship', label="Members(s)",
+            'peopleindex_person_relationship', label="Members(s)",
             panels=None, min_num=1),
     ]
 
     def members(self):
-        return [ n.people for n in self.indexpage_person_relationship.all() ]
+        return [ n.person for n in self.peopleindex_person_relationship.all() ]
 
 
 class StandardPage(Page):

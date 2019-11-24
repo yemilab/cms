@@ -16,15 +16,15 @@ from wagtail.search import index
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
 
-class BlogPeopleRelationship(Orderable, models.Model):
+class BlogPersonRelationship(Orderable, models.Model):
     page = ParentalKey(
         'BlogPage', related_name='blog_person_relationship', on_delete=models.CASCADE
     )
-    people = models.ForeignKey(
-        'home.People', related_name='person_blog_relationship', on_delete=models.CASCADE
+    person = models.ForeignKey(
+        'home.Person', related_name='person_blog_relationship', on_delete=models.CASCADE
     )
     panels = [
-        SnippetChooserPanel('people')
+        SnippetChooserPanel('person')
     ]
 
 
@@ -64,7 +64,7 @@ class BlogPage(Page):
     ]
 
     def authors(self):
-        return [ n.people for n in self.blog_person_relationship.all() ]
+        return [ n.person for n in self.blog_person_relationship.all() ]
 
     @property
     def get_tags(self):

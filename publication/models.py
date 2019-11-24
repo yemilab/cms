@@ -50,15 +50,15 @@ class Collaboration(models.Model):
         verbose_name_plural = "Collaborations"
 
 
-class PresentationPeopleRelationship(Orderable, models.Model):
+class PresentationPersonRelationship(Orderable, models.Model):
     page = ParentalKey(
         'PresentationPage', related_name='presentation_person_relationship', on_delete=models.CASCADE
     )
-    people = models.ForeignKey(
-        'home.People', related_name='person_presentation_relationship', on_delete=models.CASCADE
+    person = models.ForeignKey(
+        'home.Person', related_name='person_presentation_relationship', on_delete=models.CASCADE
     )
     panels = [
-        SnippetChooserPanel('people')
+        SnippetChooserPanel('person')
     ]
 
 
@@ -139,15 +139,15 @@ class PresentationsIndexPage(Page):
         return context
 
 
-class PaperPeopleRelationship(Orderable, models.Model):
+class PaperPersonRelationship(Orderable, models.Model):
     page = ParentalKey(
         'PaperPage', related_name='paper_person_relationship', on_delete=models.CASCADE
     )
-    people = models.ForeignKey(
-        'home.People', related_name='person_paper_relationship', on_delete=models.CASCADE
+    person = models.ForeignKey(
+        'home.Person', related_name='person_paper_relationship', on_delete=models.CASCADE
     )
     panels = [
-        SnippetChooserPanel('people')
+        SnippetChooserPanel('person')
     ]
 
 
@@ -239,12 +239,12 @@ class PapersIndexPage(Page):
         return context
 
 
-class ThesisPeopleRelationship(Orderable, models.Model):
+class ThesisPersonRelationship(Orderable, models.Model):
     page = ParentalKey(
         'ThesisPage', related_name='thesis_person_relationship', on_delete=models.CASCADE
     )
     author = models.ForeignKey(
-        'home.People', related_name='person_thesis_relationship', on_delete=models.CASCADE
+        'home.Person', related_name='person_thesis_relationship', on_delete=models.CASCADE
     )
     panels = [
         SnippetChooserPanel('author')
@@ -261,7 +261,7 @@ class ThesisPageTag(TaggedItemBase):
 
 class ThesisPage(Page):
     author = models.ForeignKey(
-        'home.People', related_name='+', on_delete=models.PROTECT
+        'home.Person', related_name='+', on_delete=models.PROTECT
     )
     publisher = models.CharField(max_length=250)
     advisor = models.CharField(max_length=250, blank=True)
