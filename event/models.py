@@ -62,24 +62,20 @@ class EventIndexPage(Page):
         context['events'] = StandardEventPage.objects.descendant_of(self).live().order_by('-start')
         return context
 
-    def get_posts(self, tag=None):
-        posts = StandardEventPage.objects.live().descendant_of(self)
-        return posts
-
 
 class SeminarPage(Page):
-    start = models.DateTimeField()
-    end = models.DateTimeField()
+    date = models.DateTimeField()
     speaker = models.CharField(max_length=250)
     speaker_affiliation = models.CharField(max_length=250, blank=True)
+    place = models.CharField(max_length=250)
     abstract = RichTextField()
     extra = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('start'),
-        FieldPanel('end'),
+        FieldPanel('date'),
         FieldPanel('speaker'),
         FieldPanel('speaker_affiliation'),
+        FieldPanel('place'),
         FieldPanel('abstract', classname="full"),
         FieldPanel('extra', classname="full"),
     ]
@@ -104,9 +100,5 @@ class SeminarIndexPage(Page):
 
     def get_context(self, request):
         context = super(SeminarIndexPage, self).get_context(request)
-        context['posts'] = SeminarPage.objects.descendant_of(self).live().order_by('-start')
+        context['posts'] = SeminarPage.objects.descendant_of(self).live().order_by('-date')
         return context
-
-    def get_posts(self):
-        posts = StandardEventPage.objects.live().descendant_of(self)
-        return posts

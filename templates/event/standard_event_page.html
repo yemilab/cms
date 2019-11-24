@@ -1,0 +1,38 @@
+{% extends "content.html" %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="page-overview">
+    <div class="row">
+      <div class="col-md-6">
+          {% image page.cover_image fill-300x300 as image %}
+          <img src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" class="" />
+        </div>
+      <div class="col-md-6">
+        <ul>
+          <li><span class="key">Date</span>
+            {{ page.start }} - {{ page.end }}
+          </li>
+          <li><span class="key">Location</span>
+            {{ page.location }}
+          </li>
+  
+          <li><span class="key">Description</span>
+            {{ page.description }}
+          </li>
+          {% if page.related_link|length > 0 %}
+          <li><span class="key">Link</span>
+            <a class="btn" href="{{ page.related_link }}" target="_blank">
+            Visit Website
+          </a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+  </div>
+</div>
+<div>
+  {{ page.body|safe }}
+</div>
+
+{% endblock content %}

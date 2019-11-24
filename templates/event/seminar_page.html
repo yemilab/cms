@@ -1,0 +1,22 @@
+{% extends "content.html" %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="page-overview">
+  <ul>
+    <li><span class="key">Date</span>
+      {{ page.date }}
+    </li>
+    <li>
+      <span class="key">Speaker</span>
+      {{ page.speaker }}{% if page.speaker_affiliation|length > 0 %} ({{ page.speaker_affiliation }}){% endif %}
+    </li>
+    <li><span class="key">Place</span>
+      {{ page.place }}
+    </li>
+  </ul>
+</div>
+<div>
+  {{ page.abstract|safe }}
+</div>
+{% endblock content %}

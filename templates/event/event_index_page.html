@@ -1,0 +1,28 @@
+{% extends "content.html" %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+
+{% block content %}
+{% if events %}
+  {% for event in events %}
+  <article class="grid-item loop-item">
+    <div class="row">
+      <div class="col-md-5 image">
+        {% image event.cover_image fill-300x300 as image %}
+        <img src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" class="" />
+      </div>
+      <div class="col-md-7 text">
+        <h5 class="entry-title">
+          <a href="{% pageurl event %}">{{ event.title }}</a> 
+        </h5>
+        <div class="meta_detail"> 		
+          <p>
+            <span>{{ event.start }} - {{ event.end }} / {{ event.location }}</span>
+          </p>
+          {{ event.description }}
+        </div>
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+{% endif %}
+{% endblock content %}

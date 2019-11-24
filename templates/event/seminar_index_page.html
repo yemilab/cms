@@ -1,0 +1,32 @@
+{% extends "content.html" %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+
+{% block content %}
+{% if posts %}
+  {% for seminar in posts %}
+  <article class="row list-icon-item loop-item ml-2">
+      <div class="text">
+        <h5 class="entry-title">
+          <a href="{% pageurl seminar %}">{{ seminar.title }}</a> 
+        </h5>
+        <div class="meta_detail"> 		
+          <p>
+            <span class="key">Date</span>
+            <span>{{ seminar.date }}</span>
+          </p>
+            <p>
+              <span class="key">Speaker</span>
+              <span>{{ seminar.speaker }}{% if seminar.speaker_affiliation|length > 0 %} ({{ seminar.speaker_affiliation }}){% endif %}</span>
+            </p>
+            <p>
+              <span class="key">Place</span>
+              <span>{{ seminar.place }}</span>
+            </p>
+          <p>Abstract</p>
+          {{ seminar.abstract|safe }}
+        </div>
+      </div>	
+    </article>
+  {% endfor %}
+{% endif %}
+{% endblock content %}
