@@ -16,8 +16,8 @@ from wagtail.snippets.edit_handlers import SnippetChooserPanel
 class Meeting(models.Model):
     name = models.CharField(max_length=250)
     city = models.CharField(max_length=100)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField("Start date")
+    end_date = models.DateField("End date")
 
     def __str__(self):
         return self.name
@@ -168,7 +168,7 @@ class PaperPage(Page):
         on_delete=models.SET_NULL,
         related_name='+',
     )
-    date = models.DateField("Presentation date")
+    date = models.DateField("Published date")
     journal = models.ForeignKey(
         'publication.Journal',
         null=True,
@@ -265,7 +265,7 @@ class ThesisPage(Page):
     )
     publisher = models.CharField(max_length=250)
     advisor = models.CharField(max_length=250, blank=True)
-    date = models.DateField("Publication date")
+    date = models.DateField("Published date")
     abstract = RichTextField(blank=True)
     tags = ClusterTaggableManager(through=ThesisPageTag, blank=True)
 

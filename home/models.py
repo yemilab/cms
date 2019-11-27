@@ -8,6 +8,7 @@ from wagtail.admin.edit_handlers import (
     FieldRowPanel,
     MultiFieldPanel,
     InlinePanel,
+    PageChooserPanel,
 )
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page, Orderable
@@ -90,6 +91,9 @@ class SectionPage(Page):
 @register_snippet
 class HomeSlider(ClusterableModel):
     title = models.CharField(max_length=250)
+    subtitle = models.CharField(max_length=250)
+    description = models.CharField(max_length=1024, null=True, blank=True)
+    date_published = models.DateField("Published date")
     cover = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -97,10 +101,18 @@ class HomeSlider(ClusterableModel):
         on_delete=models.SET_NULL,
         related_name='+'
     )
+    related_page = models.ForeignKey(
+        'wagtailcore.Page',
+        on_delete=models.PROTECT,
+        related_name='+',
+    )
 
     panels = [
         FieldPanel('title'),
+        FieldPanel('subtitle'),
+        FieldPanel('description'),
         ImageChooserPanel('cover'),
+        PageChooserPanel('related_page'),
     ]
 
     def __str__(self):
