@@ -10,12 +10,12 @@ from wagtail.documents import urls as wagtaildocs_urls
 from search import views as search_views
 
 urlpatterns = [
-    url(r'^django-admin/', admin.site.urls),
+    url(r'^en/django-admin/', admin.site.urls),
 
-    url(r'^admin/', include(wagtailadmin_urls)),
+    url(r'^en/admin/', include(wagtailadmin_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),
 
-    re_path(r'', include(wagtail_urls)),
+    re_path(r'^en/', include(wagtail_urls)),
 ]
 
 #urlpatterns += i18n_patterns(
