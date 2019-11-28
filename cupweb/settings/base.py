@@ -62,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+#    'django.middleware.locale.LocaleMiddleware',
 
     'wagtail.core.middleware.SiteMiddleware',
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
@@ -146,9 +147,8 @@ MEDIA_URL = '/media/'
 
 
 # Wagtail settings
-
-WAGTAIL_SITE_NAME = "cupweb"
+WAGTAIL_SITE_NAME = "Center for Underground Physics"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = 'https://cupweb.ibs.re.kr/'
+BASE_URL = 'https://cupweb.ibs.re.kr'
