@@ -103,6 +103,8 @@ class HomeSlider(ClusterableModel):
     )
     related_page = models.ForeignKey(
         'wagtailcore.Page',
+        null=True,
+        blank=True,
         on_delete=models.PROTECT,
         related_name='+',
     )
@@ -113,6 +115,7 @@ class HomeSlider(ClusterableModel):
         FieldPanel('description'),
         ImageChooserPanel('cover'),
         PageChooserPanel('related_page'),
+        FieldPanel('date_published'),
     ]
 
     def __str__(self):

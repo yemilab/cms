@@ -13,7 +13,9 @@
             <div class="col-md-12">
               <h3>{{ slider.subtitle }}</h3>
               <h1>{{ slider.title }}</h1>
+              {% if slider.related_page != None %}
               <p class="btn-group"><a href="{% pageurl slider.related_page %}" class="btn btn-light">READ MORE</a></p>
+              {% endif %}
             </div>
           </div>					
         </div>
