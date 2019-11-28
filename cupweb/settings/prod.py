@@ -19,6 +19,8 @@ DATABASES = {
 
 STATIC_ROOT = os.environ.get('DJANGO_STATIC_ROOT')
 
+FORCE_SCRIPT_NAME = '/en'
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST')
 EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_HOST_USER')
