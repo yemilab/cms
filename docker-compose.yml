@@ -16,6 +16,7 @@ services:
       - .env
     volumes:
       - ${HOST_STATIC_DIR}:/static
+      - ${HOST_MEDIA_DIR}:/media
     links:
       - db
     ports:

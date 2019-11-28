@@ -18,6 +18,10 @@ DATABASES = {
 }
 
 STATIC_ROOT = os.environ.get('DJANGO_STATIC_ROOT')
+STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.environ.get('DJANGO_MEDIA_ROOT')
+MEDIA_URL = '/media/'
 
 FORCE_SCRIPT_NAME = '/en'
 
