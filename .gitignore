@@ -10,15 +10,10 @@
 .~*
 .vscode/
 media/
-common/CACHE
-cupweb/settings/production.py
 db.sqlite3
+/static_compiled/
 node_modules/
-static_compiled/
 vendor/
 __pycache__
-.vagrant/
-/.vagrant/
-/Vagrantfile.local
 !.gitignore
 /db-data/
