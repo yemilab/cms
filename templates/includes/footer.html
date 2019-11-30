@@ -1,4 +1,4 @@
-{% load static %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 <footer>
 	<div class="footer-widget">		
@@ -42,16 +42,16 @@
 					<div class="footer-nav">
 						<h5>IT Services</h5>
 						<ul>
-							<li><a href="https://cupweb.ibs.re.kr/it-services/">All services</a></li>
-						</ul>						
-					</div>					
+              <li><a href="{% slugurl 'it-blog' %}">Blog</a></li>
+						</ul>
+					</div>		
 				</div>				
 				<div class="col-md-2  col-6">
 					<div class="footer-nav">
 						<h5>Newsroom</h5>
 						<ul>
-							<li><a href="https://cupweb.ibs.re.kr/">Press Release</a></li>
-							<li><a href="https://cupweb.ibs.re.kr/">Media Assets</a></li>
+							<li><a href="{% slugurl 'press-releses' %}">Press Releases</a></li>
+							<li><a href="{% slugurl 'media-assets' %}">Media Assets</a></li>
 						</ul>	
 					</div>
 				</div>
@@ -60,7 +60,7 @@
 	</div>
 	<div class="footer-copy">
 		<div class="container">
-			<div class="row site-info" >
+			<div class="row site-info">
 				<div class="col-md-12">
 					<span>
 						Copyright © 2019 Center for Underground Physics Research at IBS. All Rights Reserved.
