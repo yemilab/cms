@@ -62,6 +62,44 @@ class PeopleIndexPage(Page):
         return [ n.person for n in self.peopleindex_person_relationship.all() ]
 
 
+class FaqPage(Page):
+    introduction = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+    body = RichTextField()
+    date_published = models.DateField(
+        "Date article published", blank=True, null=True
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('introduction', classname="full"),
+        FieldPanel('body', classname='full'),
+        FieldPanel('date_published'),
+    ]
+
+    parent_page_types = ['FaqIndexPage',]
+    subpage_types = [ ]
+
+
+class FaqIndexPage(Page):
+    introduction = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+    body = RichTextField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel('introduction', classname="full"),
+        FieldPanel('body', classname='full'),
+    ]
+
+    def get_context(self, request):
+        context = super(FaqIndexPage, self).get_context(request)
+        context['posts'] = FaqPage.objects.descendant_of(self).live()
+        return context
+
+    subpage_types = ['FaqPage', ]
+
+
 class StandardPage(Page):
     introduction = models.TextField(
         help_text='Text to describe the page',

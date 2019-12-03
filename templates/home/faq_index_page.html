@@ -1,0 +1,22 @@
+{% extends "content.html" %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+
+{% block content %}
+{% if posts %}
+  {% for faq in posts %}
+  <article class="row list-item loop-item list-icon-item">
+    <div class="col-md-2">
+      <i class="fa fa-question-circle fa-5x" aria-hidden="true"></i>
+    </div>
+    <div class="col-md-10 text">
+      <h5 class="entry-title">
+        <a href="{% pageurl faq %}">{{ faq.title }}</a> 
+      </h5>
+      <p class="meta"> 
+        <span class="date">{{ faq.date_published }}</span>
+      </p>
+    </div>
+  </article><!-- #post-## -->
+  {% endfor %}
+{% endif %}
+{% endblock content %}
