@@ -2,7 +2,7 @@
 
 <ul class="sub-menu">
   {% for child in menuitems_children %}
-    <li class="menu-item {% if menuitem.active %} active{% endif %}{% if menuitem.show_dropdown %} menu-item-has-children{% endif %}">
+    <li class="menu-item {% if menuitem.active %} active{% endif %}{% if child.has_dropdown %} menu-item-has-children{% endif %}">
       <a href="{% pageurl child %}">{{ child.title }}</a>
       {% if child.has_dropdown %}
          {# recursive call TODO: please stop if depth > 2 #}
