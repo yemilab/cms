@@ -85,8 +85,6 @@ class SectionPage(Page):
         FieldPanel('body', classname='full'),
     ]
 
-    parent_page_types = ['HomePage', ]
-
 
 @register_snippet
 class HomeSlider(ClusterableModel):
