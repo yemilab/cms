@@ -144,3 +144,53 @@ class BlogIndexPage(RoutablePageMixin, Page):
             tags += post.get_tags
         tags = sorted(set(tags))
         return tags
+
+
+class TweetPersonRelationship(Orderable, models.Model):
+    page = ParentalKey(
+        'TweetPage', related_name='tweet_person_relationship', on_delete=models.CASCADE
+    )
+    person = models.ForeignKey(
+        'home.Person', related_name='person_tweet_relationship', on_delete=models.CASCADE
+    )
+    panels = [
+        SnippetChooserPanel('person')
+    ]
+
+
+class TweetPage(Page):
+    body = RichTextField()
+    date_published = models.DateField(
+        "Date article published", blank=True, null=True
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('body'),
+        FieldPanel('date_published'),
+        InlinePanel(
+            'tweet_person_relationship', label="Author(s)",
+            panels=None, min_num=1),
+    ]
+
+    def authors(self):
+        return [ n.person for n in self.tweet_person_relationship.all() ]
+
+    parent_page_types = ['TweetIndexPage']
+    subpage_types = []
+
+
+class TweetIndexPage(Page):
+    introduction = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('introduction', classname="full"),
+    ]
+
+    subpage_types = ['TweetPage']
+
+    def get_context(self, request):
+        context = super(TweetIndexPage, self).get_context(request)
+        context['tweets'] = TweetPage.objects.descendant_of(self).live().order_by('-date_published')
+        return context
