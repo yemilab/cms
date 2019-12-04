@@ -12,7 +12,7 @@ from wagtail.admin.edit_handlers import (
     StreamFieldPanel,
 )
 from wagtail.core.fields import RichTextField, StreamField
-from wagtail.core.models import Page, Orderable
+from wagtail.core.models import Collection, Page, Orderable
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
@@ -204,3 +204,40 @@ class HomePage(Page):
 
     def publications(self):
         return ['', '', '']
+
+
+class GalleryPage(Page):
+    description = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+    )
+    body = StreamField(
+        BaseStreamBlock(), verbose_name="Page body", blank=True
+    )
+    collection = models.ForeignKey(
+        Collection,
+        limit_choices_to=~models.Q(name__in=['Root']),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text='Select the image collection for this gallery.'
+    )
+    date_published = models.DateField("Published date")
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description', classname="full"),
+        StreamFieldPanel('body'),
+        ImageChooserPanel('image'),
+        FieldPanel('collection'),
+        FieldPanel('date_published'),
+    ]
+
+    # Defining what content type can sit under the parent. Since it's a blank
+    # array no subpage can be added
+    subpage_types = []
