@@ -2,11 +2,14 @@ from django.contrib import messages
 from django.db import models
 from django.shortcuts import redirect, render
 
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, RichTextField
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, RichTextField, StreamFieldPanel
 from wagtail.core.models import Page, Orderable
+from wagtail.core.fields import StreamField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
+
+from home.blocks import BaseStreamBlock
 
 
 class StandardEventPage(Page):
@@ -21,7 +24,9 @@ class StandardEventPage(Page):
         related_name='+',
         help_text='Landscape mode only; horizontal width between 1000px and 3000px.'
     )
-    body = RichTextField()
+    body = StreamField(
+        BaseStreamBlock(), verbose_name="Content block", blank=True
+    )
     start = models.DateTimeField()
     end = models.DateTimeField()
     is_allday = models.BooleanField()
@@ -31,7 +36,7 @@ class StandardEventPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('description', classname="full"),
         ImageChooserPanel('cover_image'),
-        FieldPanel('body'),
+        StreamFieldPanel('body'),
         FieldPanel('start'),
         FieldPanel('end'),
         FieldPanel('is_allday'),

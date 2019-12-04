@@ -8,13 +8,14 @@ from modelcluster.fields import ParentalKey
 from taggit.models import Tag, TaggedItemBase
 
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, RichTextField
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, RichTextField, StreamFieldPanel
 from wagtail.core.fields import StreamField
 from wagtail.core.models import Page, Orderable
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
+from home.blocks import BaseStreamBlock
 
 class BlogPersonRelationship(Orderable, models.Model):
     page = ParentalKey(
@@ -45,7 +46,9 @@ class BlogPage(Page):
         related_name='+',
         help_text='Landscape mode only; horizontal width between 1000px and 3000px.'
     )
-    body = RichTextField()
+    body = StreamField(
+        BaseStreamBlock(), verbose_name="Content block", blank=True
+    )
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
     date_published = models.DateField(
         "Date article published", blank=True, null=True
@@ -55,7 +58,7 @@ class BlogPage(Page):
         FieldPanel('subtitle', classname="full"),
         FieldPanel('introduction', classname="full"),
         ImageChooserPanel('cover_image'),
-        FieldPanel('body'),
+        StreamFieldPanel('body'),
         FieldPanel('date_published'),
         InlinePanel(
             'blog_person_relationship', label="Author(s)",

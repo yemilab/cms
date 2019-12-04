@@ -68,14 +68,16 @@ class FaqPage(Page):
     introduction = models.TextField(
         help_text='Text to describe the page',
         blank=True)
-    body = RichTextField()
+    body = StreamField(
+        BaseStreamBlock(), verbose_name="Content block", blank=True
+    )
     date_published = models.DateField(
         "Date article published", blank=True, null=True
     )
 
     content_panels = Page.content_panels + [
         FieldPanel('introduction', classname="full"),
-        FieldPanel('body', classname='full'),
+        StreamFieldPanel('body'),
         FieldPanel('date_published'),
     ]
 
@@ -87,11 +89,13 @@ class FaqIndexPage(Page):
     introduction = models.TextField(
         help_text='Text to describe the page',
         blank=True)
-    body = RichTextField()
+    body = StreamField(
+        BaseStreamBlock(), verbose_name="Content block", blank=True
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel('introduction', classname="full"),
-        FieldPanel('body', classname='full'),
+        StreamFieldPanel('body'),
     ]
 
     def get_context(self, request):
@@ -106,11 +110,13 @@ class StandardPage(Page):
     introduction = models.TextField(
         help_text='Text to describe the page',
         blank=True)
-    body = RichTextField()
+    body = StreamField(
+        BaseStreamBlock(), verbose_name="Content block", blank=True
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel('introduction', classname="full"),
-        FieldPanel('body', classname='full'),
+        StreamFieldPanel('body'),
     ]
 
 
