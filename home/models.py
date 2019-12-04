@@ -238,6 +238,30 @@ class GalleryPage(Page):
         FieldPanel('date_published'),
     ]
 
-    # Defining what content type can sit under the parent. Since it's a blank
-    # array no subpage can be added
+    parent_page_types = ['GalleriesIndexPage',]
     subpage_types = []
+
+
+class GalleriesIndexPage(Page):
+    description = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description', classname="full"),
+        ImageChooserPanel('image'),
+    ]
+
+    subpage_types = ['GalleryPage']
+
+    def get_context(self, request):
+        context = super(GalleriesIndexPage, self).get_context(request)
+        context['galleries'] = GalleryPage.objects.descendant_of(self).live().order_by('-date_published')
+        return context
