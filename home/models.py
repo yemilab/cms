@@ -9,13 +9,15 @@ from wagtail.admin.edit_handlers import (
     MultiFieldPanel,
     InlinePanel,
     PageChooserPanel,
+    StreamFieldPanel,
 )
-from wagtail.core.fields import RichTextField
+from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page, Orderable
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
+from .blocks import BaseStreamBlock
 
 @register_snippet
 class Person(ClusterableModel):
@@ -116,11 +118,13 @@ class SectionPage(Page):
     introduction = models.TextField(
         help_text='Text to describe the page',
         blank=True)
-    body = RichTextField()
+    body = StreamField(
+        BaseStreamBlock(), verbose_name="Content block", blank=True
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel('introduction', classname="full"),
-        FieldPanel('body', classname='full'),
+        StreamFieldPanel('body'),
     ]
 
 
