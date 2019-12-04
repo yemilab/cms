@@ -2,9 +2,42 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
-<ul>
-  {% for member in page.members %}
-  <li>{{ member }}</li>
-  {% endfor %}    
-</ul>
+{% for member in page.members %}
+<article class="row people-item loop-item" id="post-1304">
+  <div class="col-md-3 image">
+    <div class="people_image">
+      {% image member.photo fill-150x200 as photo %}
+      <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" />
+    </div>
+    <div class="people_profile">
+        {% if member.name|length > 0 %}
+        <h5>{{ member.name }} ({{ member.first_name }} {{ member.last_name }})</h5>
+        {% else %}
+        <h5>{{ member.first_name }} {{ member.last_name }}</h5>
+        {% endif %}
+        {% if member.description|length > 0 %}
+        <p class="people_team">
+          {{ member.description }}
+        </p>
+        {% endif %}
+    </div>
+    {% if member.email|length > 0 or member.homepage|length > 0 %}
+    <div class="people_contact">
+      {% if member.email|length > 0 %}
+      <a href="mailto:{{ member.email }}"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+      {% endif %}
+      {% if member.homepage|length > 0 %}
+      <a href="{{ member.homepage }}"><i class="fa fa-home" aria-hidden="true"></i></a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  <div class="col-md-9 text">
+      <div class="people_information">
+        {{ member.information|richtext }}
+      </div>
+  </div>
+</article>
+{% endfor %}    
+
 {% endblock content %}

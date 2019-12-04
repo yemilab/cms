@@ -21,8 +21,21 @@ from .blocks import BaseStreamBlock
 
 @register_snippet
 class Person(ClusterableModel):
-    first_name = models.CharField("First name", max_length=254)
-    last_name = models.CharField("Last name", max_length=254)
+    first_name = models.CharField("First name", max_length=254, help_text="First name (Latin)")
+    last_name = models.CharField("Last name", max_length=254, help_text="Last name (Latin)")
+    name = models.CharField("Name", max_length=254, help_text="Name (Original)", blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    affiliation = models.CharField("Affiliation", max_length=254, blank=True, null=True)
+    information = RichTextField(blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    homepage = models.URLField(blank=True, null=True)
+    photo = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
 
     panels = [
         MultiFieldPanel([
@@ -30,7 +43,14 @@ class Person(ClusterableModel):
                 FieldPanel('first_name', classname="col6"),
                 FieldPanel('last_name', classname="col6"),
             ])
-        ], "Name"),
+        ], "Name (Latin)"),
+        FieldPanel('name'),
+        FieldPanel('description'),
+        FieldPanel('affiliation'),
+        FieldPanel('information'),
+        FieldPanel('email'),
+        FieldPanel('homepage'),
+        ImageChooserPanel('photo'),
     ]
 
     def __str__(self):

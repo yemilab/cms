@@ -9,8 +9,8 @@
     <article class="grid-item loop-item">
       <div class="image">
         <a href="{% pageurl gallery %}">
-          {% image gallery.image fill-300x300-c150 as image %}
-          <img src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" class="" />
+          {% image gallery.image fill-300x300 as image %}
+          <img src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" />
         </a>
       </div>
       <div class="text">
