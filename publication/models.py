@@ -39,17 +39,6 @@ class Journal(models.Model):
         verbose_name_plural = "Journals"
 
 
-@register_snippet
-class Collaboration(models.Model):
-    name = models.CharField(max_length=250)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = "Collaborations"
-
-
 class PresentationPersonRelationship(Orderable, models.Model):
     page = ParentalKey(
         'PresentationPage', related_name='presentation_person_relationship', on_delete=models.CASCADE
@@ -76,13 +65,6 @@ class PresentationPage(Page):
     tags = ClusterTaggableManager(through=PresentationPageTag, blank=True)
     meeting = models.ForeignKey(
         'publication.Meeting',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+',
-    )
-    collaboration = models.ForeignKey(
-        'publication.Collaboration',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -160,14 +142,7 @@ class PaperPageTag(TaggedItemBase):
 
 
 class PaperPage(Page):
-    authors = models.CharField(max_length=10240, blank=True)
-    collaboration = models.ForeignKey(
-        'publication.Collaboration',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+',
-    )
+    authors = models.TextField()
     date = models.DateField("Published date")
     journal = models.ForeignKey(
         'publication.Journal',
@@ -176,25 +151,16 @@ class PaperPage(Page):
         on_delete=models.SET_NULL,
         related_name='+',
     )
-    page = models.CharField(max_length=100, blank=True)
-    volume = models.CharField(max_length=100, blank=True)
-    issue = models.CharField(max_length=100, blank=True)
-    abstract = RichTextField(blank=True)
+    abstract = RichTextField(blank=True, null=True)
     tags = ClusterTaggableManager(through=PresentationPageTag, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('authors'),
-        FieldPanel('collaboration'),
         InlinePanel(
             'paper_person_relationship', label="Corresponding author(s)",
             panels=None, min_num=1),
         FieldPanel('date'),
-        MultiFieldPanel([
-            FieldPanel('journal'),
-            FieldPanel('page'),
-            FieldPanel('volume'),
-            FieldPanel('issue'),
-        ], heading="Journal section"),
+        FieldPanel('journal'),
         FieldPanel('tags'),
         FieldPanel('abstract', classname="full")
     ]
