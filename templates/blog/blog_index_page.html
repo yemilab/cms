@@ -13,7 +13,7 @@
   		<h5 class="entry-title">
         <a href="{% pageurl blog %}">{{ blog.title }}</a> 
   		</h5>
-  		<p>{{ blog.introduction|truncatewords:15 }}</p>
+  		<p>{{ blog.description|truncatewords:15 }}</p>
   		<p class="meta"> 
         {% if blog.date_published %}
         <span class="date">{{ blog.date_published }}</span>

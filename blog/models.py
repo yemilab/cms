@@ -35,7 +35,7 @@ class BlogPageTag(TaggedItemBase):
 
 class BlogPage(Page):
     subtitle = models.CharField(blank=True, max_length=255)
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
     cover_image = models.ForeignKey(
@@ -56,7 +56,7 @@ class BlogPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('subtitle', classname="full"),
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
         ImageChooserPanel('cover_image'),
         StreamFieldPanel('body'),
         FieldPanel('date_published'),
@@ -85,7 +85,7 @@ class BlogPage(Page):
 
 
 class BlogIndexPage(RoutablePageMixin, Page):
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
     image = models.ForeignKey(
@@ -98,7 +98,7 @@ class BlogIndexPage(RoutablePageMixin, Page):
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
         ImageChooserPanel('image'),
     ]
 
@@ -183,12 +183,12 @@ class TweetPage(Page):
 
 
 class TweetIndexPage(Page):
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
     ]
 
     subpage_types = ['TweetPage']

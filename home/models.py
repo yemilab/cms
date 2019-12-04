@@ -65,7 +65,7 @@ class PeopleIndexPage(Page):
 
 
 class FaqPage(Page):
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
     body = StreamField(
@@ -76,7 +76,7 @@ class FaqPage(Page):
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
         StreamFieldPanel('body'),
         FieldPanel('date_published'),
     ]
@@ -86,7 +86,7 @@ class FaqPage(Page):
 
 
 class FaqIndexPage(Page):
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
     body = StreamField(
@@ -94,7 +94,7 @@ class FaqIndexPage(Page):
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
         StreamFieldPanel('body'),
     ]
 
@@ -107,7 +107,7 @@ class FaqIndexPage(Page):
 
 
 class StandardPage(Page):
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
     body = StreamField(
@@ -115,13 +115,13 @@ class StandardPage(Page):
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
         StreamFieldPanel('body'),
     ]
 
 
 class SectionPage(Page):
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
     body = StreamField(
@@ -129,7 +129,7 @@ class SectionPage(Page):
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
         StreamFieldPanel('body'),
     ]
 

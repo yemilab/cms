@@ -104,12 +104,12 @@ class PresentationPage(Page):
 
 
 class PresentationsIndexPage(Page):
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
     ]
 
     subpage_types = ['PresentationPage', ]
@@ -204,12 +204,12 @@ class PaperPage(Page):
 
 
 class PapersIndexPage(Page):
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
     ]
 
     subpage_types = ['PaperPage', ]
@@ -283,12 +283,12 @@ class ThesisPage(Page):
 
 
 class ThesesIndexPage(Page):
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
     ]
 
     subpage_types = ['ThesisPage', ]

@@ -49,12 +49,12 @@ class StandardEventPage(Page):
 
 
 class EventsIndexPage(Page):
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
     ]
 
     subpage_types = ['StandardEventPage']
@@ -90,12 +90,12 @@ class SeminarPage(Page):
 
 
 class SeminarsIndexPage(Page):
-    introduction = models.TextField(
+    description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('introduction', classname="full"),
+        FieldPanel('description', classname="full"),
     ]
 
     subpage_types = ['SeminarPage']
