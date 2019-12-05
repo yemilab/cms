@@ -5,20 +5,14 @@
 {% if presentations %}
   {% for presentation in presentations %}
   <article class="row list-item loop-item">
-    <div class="col-md-4 image">
-      <div class="image">
-      </div>
-    </div>
-    <div class="col-md-8">
-      <div class="text">
-        <h5 class="entry-title">
-          <a href="{% pageurl presentation %}">{{ presentation.title }}</a> 
-        </h5>
-        <p class="meta"> 
-          <span class="date">{{ presentation.date }}</span> <span>by {{ presentation.author }}</span>
-        </p>
-      </div>      
-    </div>
+    <div class="text">
+      <h5 class="entry-title">
+        <a href="{% pageurl presentation %}">{{ presentation.title }}</a> 
+      </h5>
+      <p class="meta"> 
+        <span class="date">{{ presentation.date }}</span> <span>by {{ presentation.presentor }}</span>
+      </p>
+    </div>      
   </article>
   {% endfor %}
   {% if presentations.paginator.count > 1 %}
