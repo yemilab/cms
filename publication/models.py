@@ -102,18 +102,6 @@ class PresentationsIndexPage(Page):
         return context
 
 
-class PaperPersonRelationship(Orderable, models.Model):
-    page = ParentalKey(
-        'PaperPage', related_name='paper_person_relationship', on_delete=models.CASCADE
-    )
-    person = models.ForeignKey(
-        'home.Person', related_name='person_paper_relationship', on_delete=models.CASCADE
-    )
-    panels = [
-        SnippetChooserPanel('person')
-    ]
-
-
 class PaperPageTag(TaggedItemBase):
     content_object = ParentalKey(
         'PaperPage',
@@ -140,9 +128,6 @@ class PaperPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('authors'),
-        InlinePanel(
-            'paper_person_relationship', label="Corresponding author(s)",
-            panels=None, min_num=1),
         FieldPanel('journal'),
         FieldPanel('date'),
         FieldPanel('tags'),
@@ -190,18 +175,6 @@ class PapersIndexPage(Page):
         papers = self.paginate(request, self.get_papers())
         context['papers'] = papers
         return context
-
-
-class ThesisPersonRelationship(Orderable, models.Model):
-    page = ParentalKey(
-        'ThesisPage', related_name='thesis_person_relationship', on_delete=models.CASCADE
-    )
-    author = models.ForeignKey(
-        'home.Person', related_name='person_thesis_relationship', on_delete=models.CASCADE
-    )
-    panels = [
-        SnippetChooserPanel('author')
-    ]
 
 
 class ThesisPageTag(TaggedItemBase):
