@@ -8,6 +8,7 @@ from taggit.models import TaggedItemBase
 from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel
+from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
@@ -24,18 +25,6 @@ class Journal(models.Model):
         verbose_name_plural = "Journals"
 
 
-class PresentationPersonRelationship(Orderable, models.Model):
-    page = ParentalKey(
-        'PresentationPage', related_name='presentation_person_relationship', on_delete=models.CASCADE
-    )
-    person = models.ForeignKey(
-        'home.Person', related_name='person_presentation_relationship', on_delete=models.CASCADE
-    )
-    panels = [
-        SnippetChooserPanel('person')
-    ]
-
-
 class PresentationPageTag(TaggedItemBase):
     content_object = ParentalKey(
         'PresentationPage',
@@ -45,23 +34,40 @@ class PresentationPageTag(TaggedItemBase):
 
 
 class PresentationPage(Page):
+    is_featured = models.BooleanField()
+    cover_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+    )
     date = models.DateField("Presentation date")
     abstract = RichTextField(blank=True, null=True)
     extra = RichTextField(blank=True, null=True)
     tags = ClusterTaggableManager(through=PresentationPageTag, blank=True)
+    presentor = models.ForeignKey(
+        'home.Person',
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name='+',
+    )
     meeting = models.CharField(max_length=512)
     country = models.CharField(max_length=256, blank=True, null=True)
     location = models.CharField(max_length=256, blank=True, null=True)
 
     content_panels = Page.content_panels + [
-        InlinePanel(
-            'presentation_person_relationship', label="Presentor(s)",
-            panels=None, min_num=1),
+        FieldPanel('is_featured'),
+        ImageChooserPanel('cover_image'),
+        SnippetChooserPanel('presentor'),
         MultiFieldPanel([
             FieldRowPanel([
-                FieldPanel('meeting', classname="col6"),
-                FieldPanel('country', classname="col3"),
-                FieldPanel('location', classname="col3"),
+                FieldPanel('meeting', classname="col10"),
+            ]),
+            FieldRowPanel([
+                FieldPanel('country', classname="col6"),
+                FieldPanel('location', classname="col6"),
             ]),
         ], "Meeting information"),
         FieldPanel('date'),
@@ -119,6 +125,14 @@ class PaperPageTag(TaggedItemBase):
 
 
 class PaperPage(Page):
+    is_featured = models.BooleanField()
+    cover_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+    )
     date = models.DateField("Published date")
     abstract = RichTextField(blank=True, null=True)
     extra = RichTextField(blank=True, null=True)
@@ -137,6 +151,8 @@ class PaperPage(Page):
     bibtex = models.TextField(blank=True, null=True)
 
     content_panels = Page.content_panels + [
+        FieldPanel('is_featured'),
+        ImageChooserPanel('cover_image'),
         FieldPanel('authors'),
         FieldPanel('journal'),
         FieldPanel('refinfo'),
