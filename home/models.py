@@ -89,7 +89,7 @@ class FaqPage(Page):
         help_text='Text to describe the page',
         blank=True)
     body = StreamField(
-        BaseStreamBlock(), verbose_name="Content block", blank=True
+        BaseStreamBlock(), verbose_name="Content block", blank=True, null=True
     )
     date_published = models.DateField(
         "Date article published", blank=True, null=True
@@ -110,7 +110,7 @@ class FaqIndexPage(Page):
         help_text='Text to describe the page',
         blank=True)
     body = StreamField(
-        BaseStreamBlock(), verbose_name="Content block", blank=True
+        BaseStreamBlock(), verbose_name="Content block", blank=True, null=True
     )
 
     content_panels = Page.content_panels + [
@@ -131,7 +131,7 @@ class StandardPage(Page):
         help_text='Text to describe the page',
         blank=True)
     body = StreamField(
-        BaseStreamBlock(), verbose_name="Content block", blank=True
+        BaseStreamBlock(), verbose_name="Content block", blank=True, null=True
     )
 
     content_panels = Page.content_panels + [
@@ -145,7 +145,7 @@ class SectionPage(Page):
         help_text='Text to describe the page',
         blank=True)
     body = StreamField(
-        BaseStreamBlock(), verbose_name="Content block", blank=True
+        BaseStreamBlock(), verbose_name="Content block", blank=True, null=True
     )
 
     content_panels = Page.content_panels + [
@@ -238,7 +238,7 @@ class GalleryPage(Page):
         related_name='+',
     )
     body = StreamField(
-        BaseStreamBlock(), verbose_name="Page body", blank=True
+        BaseStreamBlock(), verbose_name="Page body", blank=True, null=True
     )
     collection = models.ForeignKey(
         Collection,

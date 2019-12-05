@@ -25,7 +25,7 @@ class StandardEventPage(Page):
         help_text='Landscape mode only; horizontal width between 1000px and 3000px.'
     )
     body = StreamField(
-        BaseStreamBlock(), verbose_name="Content block", blank=True
+        BaseStreamBlock(), verbose_name="Content block", blank=True, null=True
     )
     start = models.DateTimeField()
     end = models.DateTimeField()
