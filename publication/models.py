@@ -131,7 +131,7 @@ class PaperPage(Page):
         on_delete=models.SET_NULL,
         related_name='+',
     )
-    refinfo = models.CharField("Volume, Issue, Page", max_length=250)
+    refinfo = models.CharField("Volume, Issue, Page", max_length=250, blank=True, null=True)
     doi = models.CharField(max_length=250, blank=True, null=True)
     url = models.URLField("Permanent link", blank=True, null=True)
     bibtex = models.TextField(blank=True, null=True)
