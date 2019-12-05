@@ -133,7 +133,7 @@ class PaperPage(Page):
     )
     refinfo = models.CharField("Volume, Issue, Page", max_length=250, blank=True, null=True)
     doi = models.CharField(max_length=250, blank=True, null=True)
-    url = models.URLField("Permanent link", blank=True, null=True)
+    permalink = models.URLField("Permanent link", blank=True, null=True)
     bibtex = models.TextField(blank=True, null=True)
 
     content_panels = Page.content_panels + [
@@ -143,6 +143,7 @@ class PaperPage(Page):
         FieldPanel('date'),
         FieldPanel('tags'),
         FieldPanel('doi'),
+        FieldPanel('permalink'),
         FieldPanel('bibtex'),
         FieldPanel('abstract', classname="full"),
         FieldPanel('extra', classname="full"),
