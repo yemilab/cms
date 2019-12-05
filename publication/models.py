@@ -142,8 +142,10 @@ class PaperPageTag(TaggedItemBase):
 
 
 class PaperPage(Page):
-    authors = models.TextField()
     date = models.DateField("Published date")
+    abstract = RichTextField(blank=True, null=True)
+    tags = ClusterTaggableManager(through=PresentationPageTag, blank=True)
+    authors = models.TextField()
     journal = models.ForeignKey(
         'publication.Journal',
         null=True,
@@ -151,8 +153,6 @@ class PaperPage(Page):
         on_delete=models.SET_NULL,
         related_name='+',
     )
-    abstract = RichTextField(blank=True, null=True)
-    tags = ClusterTaggableManager(through=PresentationPageTag, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('authors'),
@@ -226,14 +226,14 @@ class ThesisPageTag(TaggedItemBase):
 
 
 class ThesisPage(Page):
+    date = models.DateField("Published date")
+    abstract = RichTextField(blank=True)
+    tags = ClusterTaggableManager(through=ThesisPageTag, blank=True)
     author = models.ForeignKey(
         'home.Person', related_name='+', on_delete=models.PROTECT
     )
     publisher = models.CharField(max_length=250)
     advisor = models.CharField(max_length=250, blank=True)
-    date = models.DateField("Published date")
-    abstract = RichTextField(blank=True)
-    tags = ClusterTaggableManager(through=ThesisPageTag, blank=True)
 
     content_panels = Page.content_panels + [
         SnippetChooserPanel('author'),
