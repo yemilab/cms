@@ -13,24 +13,9 @@ from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
 
 @register_snippet
-class Meeting(models.Model):
-    name = models.CharField(max_length=250)
-    city = models.CharField(max_length=100)
-    start_date = models.DateField("Start date")
-    end_date = models.DateField("End date")
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = "Meetings"
-
-
-@register_snippet
 class Journal(models.Model):
     title = models.CharField(max_length=250)
     abbreviation = models.CharField(max_length=100, blank=True)
-    doi = models.CharField(max_length=250, blank=True)
 
     def __str__(self):
         return self.title
@@ -61,24 +46,20 @@ class PresentationPageTag(TaggedItemBase):
 
 class PresentationPage(Page):
     date = models.DateField("Presentation date")
-    abstract = RichTextField(blank=True)
+    abstract = RichTextField(blank=True, null=True)
+    extra = RichTextField(blank=True, null=True)
     tags = ClusterTaggableManager(through=PresentationPageTag, blank=True)
-    meeting = models.ForeignKey(
-        'publication.Meeting',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+',
-    )
+    meeting = models.CharField(max_length=512)
 
     content_panels = Page.content_panels + [
-        FieldPanel('meeting'),
-        FieldPanel('date'),
         InlinePanel(
             'presentation_person_relationship', label="Presentor(s)",
             panels=None, min_num=1),
+        FieldPanel('meeting'),
+        FieldPanel('date'),
         FieldPanel('tags'),
-        FieldPanel('abstract', classname="full")
+        FieldPanel('abstract', classname="full"),
+        FieldPanel('extra', classname="full"),
     ]
 
     subpage_types = [ ]
@@ -144,6 +125,7 @@ class PaperPageTag(TaggedItemBase):
 class PaperPage(Page):
     date = models.DateField("Published date")
     abstract = RichTextField(blank=True, null=True)
+    extra = RichTextField(blank=True, null=True)
     tags = ClusterTaggableManager(through=PresentationPageTag, blank=True)
     authors = models.TextField()
     journal = models.ForeignKey(
@@ -153,16 +135,21 @@ class PaperPage(Page):
         on_delete=models.SET_NULL,
         related_name='+',
     )
+    doi = models.CharField(max_length=250, blank=True, null=True)
+    bibtex = models.TextField(blank=True, null=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('authors'),
         InlinePanel(
             'paper_person_relationship', label="Corresponding author(s)",
             panels=None, min_num=1),
-        FieldPanel('date'),
         FieldPanel('journal'),
+        FieldPanel('date'),
         FieldPanel('tags'),
-        FieldPanel('abstract', classname="full")
+        FieldPanel('doi'),
+        FieldPanel('bibtex'),
+        FieldPanel('abstract', classname="full"),
+        FieldPanel('extra', classname="full"),
     ]
 
     subpage_types = [ ]
@@ -227,7 +214,8 @@ class ThesisPageTag(TaggedItemBase):
 
 class ThesisPage(Page):
     date = models.DateField("Published date")
-    abstract = RichTextField(blank=True)
+    abstract = RichTextField(blank=True, null=True)
+    extra = RichTextField(blank=True, null=True)
     tags = ClusterTaggableManager(through=ThesisPageTag, blank=True)
     author = models.ForeignKey(
         'home.Person', related_name='+', on_delete=models.PROTECT
@@ -242,6 +230,7 @@ class ThesisPage(Page):
         FieldPanel('date'),
         FieldPanel('abstract', classname="full"),
         FieldPanel('tags'),
+        FieldPanel('extra', classname="full"),
     ]
 
     subpage_types = [ ]
