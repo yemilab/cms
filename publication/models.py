@@ -7,7 +7,7 @@ from taggit.models import TaggedItemBase
 
 from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
@@ -50,12 +50,20 @@ class PresentationPage(Page):
     extra = RichTextField(blank=True, null=True)
     tags = ClusterTaggableManager(through=PresentationPageTag, blank=True)
     meeting = models.CharField(max_length=512)
+    country = models.CharField(max_length=256, blank=True, null=True)
+    location = models.CharField(max_length=256, blank=True, null=True)
 
     content_panels = Page.content_panels + [
         InlinePanel(
             'presentation_person_relationship', label="Presentor(s)",
             panels=None, min_num=1),
-        FieldPanel('meeting'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('meeting', classname="col6"),
+                FieldPanel('country', classname="col3"),
+                FieldPanel('location', classname="col3"),
+            ]),
+        ], "Meeting information"),
         FieldPanel('date'),
         FieldPanel('tags'),
         FieldPanel('abstract', classname="full"),
@@ -114,7 +122,7 @@ class PaperPage(Page):
     date = models.DateField("Published date")
     abstract = RichTextField(blank=True, null=True)
     extra = RichTextField(blank=True, null=True)
-    tags = ClusterTaggableManager(through=PresentationPageTag, blank=True)
+    tags = ClusterTaggableManager(through=PaperPageTag, blank=True)
     authors = models.TextField()
     journal = models.ForeignKey(
         'publication.Journal',
@@ -123,12 +131,15 @@ class PaperPage(Page):
         on_delete=models.SET_NULL,
         related_name='+',
     )
+    refinfo = models.CharField("Volume, Issue, Page", max_length=250)
     doi = models.CharField(max_length=250, blank=True, null=True)
+    url = models.URLField("Permanent link", blank=True, null=True)
     bibtex = models.TextField(blank=True, null=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('authors'),
         FieldPanel('journal'),
+        FieldPanel('refinfo'),
         FieldPanel('date'),
         FieldPanel('tags'),
         FieldPanel('doi'),
