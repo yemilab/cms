@@ -285,3 +285,39 @@ class GalleriesIndexPage(Page):
         context = super(GalleriesIndexPage, self).get_context(request)
         context['galleries'] = GalleryPage.objects.descendant_of(self).live().order_by('-date_published')
         return context
+
+
+class CareerPage(Page):
+    description = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+    body = RichTextField()
+    date_published = models.DateField("Published date")
+    date_expired = models.DateField("Expired date")
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description', classname="full"),
+        FieldPanel('body', classname='full'),
+        FieldPanel('date_published'),
+        FieldPanel('date_expired')
+    ]
+
+    parent_page_types = ['CareersIndexPage',]
+    subpage_types = []
+
+
+class CareersIndexPage(Page):
+    description = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description', classname="full"),
+    ]
+
+    subpage_types = ['CareerPage']
+
+    def get_context(self, request):
+        context = super(CareersIndexPage, self).get_context(request)
+        context['careers'] = CareerPage.objects.descendant_of(self).live().order_by('-date_expired')
+        return context
