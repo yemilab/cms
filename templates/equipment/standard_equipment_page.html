@@ -1,0 +1,33 @@
+{% extends "content.html" %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="page-overview">
+  <div class="row">
+    <div class="col-md-6">
+      {% image page.cover_image width-640 as image %}
+      <img src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" class="img-fluid" />
+    </div>
+    <div class="col-md-6">
+      <ul>
+        <li><span class="key">Manufacturer</span> {{ page.manufacturer }}</li>
+        <li><span class="key">Manufacture date</span>
+          {% if page.manufacture_date_fmt == 'Y' %}
+            {{ page.manufacture_date|date:"Y" }}
+          {% elif page.manufacture_date_fmt == 'YM' %}
+            {{ page.manufacture_date|date:"Y-M" }}
+          {% else %}
+            {{ page.manufacture_date }}
+          {% endif %}
+        </li>
+        <li><span class="key">Model</span> {{ page.model }}</li>
+        <li><span class="key">Location</span> {{ page.location }}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<h3>PURPOSE</h3>
+{{ page.purpose|richtext }}
+<h3>SPECIFICATION AND PERFORMANCE</h3>
+{{ page.spec|richtext }}
+{% endblock content %}
