@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 
 from modelcluster.fields import ParentalKey
@@ -304,6 +306,9 @@ class CareerPage(Page):
 
     parent_page_types = ['CareersIndexPage',]
     subpage_types = []
+
+    def is_expired(self):
+        return date.today() > self.date_expired
 
 
 class CareersIndexPage(Page):
