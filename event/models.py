@@ -8,6 +8,7 @@ from wagtail.core.fields import StreamField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.api import APIField
 
 from home.blocks import BaseStreamBlock
 
@@ -46,6 +47,14 @@ class StandardEventPage(Page):
 
     parent_page_types = ['EventsIndexPage']
     subpage_types = []
+
+    api_fields = [
+        APIField('start'),
+        APIField('end'),
+        APIField('is_allday'),
+        APIField('location'),
+        APIField('related_link'),
+    ]
 
 
 class EventsIndexPage(Page):
