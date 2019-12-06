@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from modelcluster.fields import ParentalKey
 
@@ -70,8 +71,44 @@ class StandardEquipmentPage(Page):
         FieldPanel('extra', classname='full'),
     ]
 
-    #parent_page_types = ['EventsIndexPage']
-    #subpage_types = []
+    parent_page_types = ['EquipmentIndexPage']
+    subpage_types = []
 
     def authors(self):
         return [ n.person for n in self.equipment_photo_relationship.all() ]
+
+
+class EquipmentIndexPage(Page):
+    description = models.TextField(
+        help_text='Text to describe the page',
+        blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description', classname="full"),
+    ]
+
+    subpage_types = ['StandardEquipmentPage', ]
+    parent_page_types = ['home.SectionPage', ]
+
+    def get_equipment(self):
+        return StandardEquipmentPage.objects.live().descendant_of(self).order_by('title')
+
+    def children(self):
+        return self.get_children().specific().live()
+
+    def paginate(self, request, *args):
+        page = request.GET.get('page')
+        paginator = Paginator(self.get_equipment(), 12)
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+        return pages
+
+    def get_context(self, request):
+        context = super(EquipmentIndexPage, self).get_context(request)
+        equipment = self.paginate(request, self.get_equipment())
+        context['equipment'] = equipment
+        return context

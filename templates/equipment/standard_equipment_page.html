@@ -5,8 +5,8 @@
 <div class="page-overview">
   <div class="row">
     <div class="col-md-6">
-      {% image page.cover_image width-640 as image %}
-      <img src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" class="img-fluid" />
+      {% image page.cover_photo width-640 as photo %}
+      <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" class="img-fluid" />
     </div>
     <div class="col-md-6">
       <ul>

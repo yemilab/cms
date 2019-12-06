@@ -1,0 +1,29 @@
+{% extends "content.html" %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+
+{% block content %}
+{% if equipment %}
+<div class="row">
+  {% for e in equipment %}
+  <div class="col-md-6">
+    <article class="grid-item loop-item">
+      <div class="image">
+        <a href="{% pageurl e %}">
+          {% image e.cover_photo fill-300x300 as photo %}
+          <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" />
+        </a>
+      </div>
+      <div class="text">
+        <p class="meta"> 
+          <span class="date">{{ e.manufacturer }}</span>
+        </p>
+        <h5 class="entry-title">
+          <a href="{% pageurl e %}">{{ e.title }}</a> 
+        </h5>
+      </div>	
+    </article>  
+  </div>
+  {% endfor %}  
+</div>
+{% endif %}
+{% endblock content %}
