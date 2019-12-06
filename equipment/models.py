@@ -61,6 +61,7 @@ class StandardEquipmentPage(Page):
         FieldPanel('manufacture_date'),
         FieldPanel('model'),
         FieldPanel('location'),
+        FieldPanel('manager'),
         FieldPanel('purpose', classname='full'),
         FieldPanel('spec', classname='full'),
         InlinePanel(
