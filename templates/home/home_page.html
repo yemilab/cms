@@ -34,7 +34,7 @@
       <div class="row">
         <div class="col-md-2 col-4">
           <div class="item">
-            <a href="https://cupweb.ibs.re.kr/calendar/">
+            <a href="{% slugurl 'calendar' %}">
               <img src="{% static 'img/ic_cal.png' %}" alt="">
               <h5>Calendar</h5>
             </a>
@@ -42,7 +42,7 @@
         </div>
         <div class="col-md-2 col-4">
           <div class="item">
-            <a href="https://cupweb.ibs.re.kr/faq/">
+            <a href="{% slugurl 'faq' %}">
               <img src="{% static 'img/ic_faq.png' %}" alt="">
               <h5>FAQ</h5>
             </a>
@@ -50,7 +50,7 @@
         </div>
         <div class="col-md-2 col-4">
           <div class="item">
-            <a href="https://cupweb.ibs.re.kr/open-data/">
+            <a href="{% slugurl 'open-data' %}">
               <img src="{% static 'img/ic_data.png' %}" alt="">
               <h5>Open Data</h5>
             </a>
@@ -58,7 +58,7 @@
         </div>
         <div class="col-md-2 col-4">
           <div class="item">
-            <a href="https://cupweb.ibs.re.kr/about-center/for-visitors/request-visit/">
+            <a href="{% slugurl 'request-visit' %}">
               <img src="{% static 'img/ic_visit.png' %}" alt="">
               <h5>Request Visit</h5>
             </a>
@@ -66,7 +66,7 @@
         </div>
         <div class="col-md-2 col-4">
           <div class="item">
-            <a href="https://cupweb.ibs.re.kr/facilities-and-equipment/equipment-enquiry/">
+            <a href="{% slugurl 'equipment-enquiry' %}">
               <img src="{% static 'img/ic_reserve.png' %}" alt="">
               <h5>Equipment Enquiry</h5>
             </a>
@@ -74,21 +74,21 @@
         </div>
         <div class="col-md-2 col-4">
           <div class="item">
-            <a href="https://cupweb.ibs.re.kr/job">
+            <a href="{% slugurl 'careers' %}">
               <img src="{% static 'img/ic_careers.png' %}" alt="">
               <h5>Careers</h5>
             </a>
           </div>				
         </div>
       </div>
-    </div>	
+    </div>
 </section>
 <section id="news">
 	<div class="container">
 		<div class="row section-title">
 			<div class="col-md-12">
 				<h3><span>News</span></h3>
-				<p><a href="https://cupweb.ibs.re.kr/news_cat/news/">View All News</a></p>
+				<p><a href="{% slugurl 'our-news' %}">View All News</a></p>
 		  </div>
 	  </div>
 	  <div class="row">
@@ -119,7 +119,7 @@
 		<div class="row section-title">
 			<div class="col-md-12">
 				<h3><span>Publications</span></h3>
-				<p><a href="https://cupweb.ibs.re.kr/publication_cat/paper/">View All Publications</a></p>
+				<p><a href="{% slugurl 'papers' %}">View All Publications</a></p>
 			</div>
 		</div>
 		<div class="row">
