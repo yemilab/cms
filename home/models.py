@@ -31,6 +31,7 @@ class Person(ClusterableModel):
     information = RichTextField(blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     homepage = models.URLField(blank=True, null=True)
+    phone = models.CharField(max_length=64, blank=True, null=True)
     photo = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -52,6 +53,7 @@ class Person(ClusterableModel):
         FieldPanel('information'),
         FieldPanel('email'),
         FieldPanel('homepage'),
+        FieldPanel('phone'),
         ImageChooserPanel('photo'),
     ]
 
