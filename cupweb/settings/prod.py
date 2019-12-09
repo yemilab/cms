@@ -23,7 +23,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.environ.get('DJANGO_MEDIA_ROOT')
 MEDIA_URL = '/media/'
 
-FORCE_SCRIPT_NAME = '/en'
+#FORCE_SCRIPT_NAME = '/subdir'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST')
