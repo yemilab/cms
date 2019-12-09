@@ -1,6 +1,7 @@
 from datetime import date
 
 from django.db import models
+from django.utils import translation
 
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -20,6 +21,19 @@ from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
 from .blocks import BaseStreamBlock
+
+
+class TranslatedField:
+    def __init__(self, en_field, ko_field):
+        self.en_field = en_field
+        self.ko_field = ko_field
+
+    def __get__(self, instance, owner):
+        if translation.get_language() == 'ko':
+            return getattr(instance, self.ko_field)
+        else:
+            return getattr(instance, self.en_field)
+
 
 @register_snippet
 class Person(ClusterableModel):
@@ -131,6 +145,11 @@ class FaqIndexPage(Page):
 
 
 class StandardPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255, blank=True, null=True)
+    translated_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
     description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
@@ -139,6 +158,7 @@ class StandardPage(Page):
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
         StreamFieldPanel('body'),
     ]
