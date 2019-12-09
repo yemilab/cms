@@ -19,13 +19,13 @@ urlpatterns = [
 
     url(r'^api/v2/', api_router.urls),
 
-    re_path(r'', include(wagtail_urls)),
+    #re_path(r'', include(wagtail_urls)),
 ]
 
-#urlpatterns += i18n_patterns(
-#    #url(r'^search/$', search_views.search, name='search'),
-#    re_path(r'', include(wagtail_urls)),
-#)
+urlpatterns += i18n_patterns(
+    #url(r'^search/$', search_views.search, name='search'),
+    re_path(r'', include(wagtail_urls)),
+)
 
 if settings.DEBUG:
     from django.conf.urls.static import static
