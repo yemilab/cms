@@ -19,7 +19,7 @@ class EquipmentPhotoRelationship(Orderable, models.Model):
         'wagtailimages.Image', related_name='photo_equipment_relationship', on_delete=models.CASCADE
     )
     panels = [
-        SnippetChooserPanel('photo')
+        ImageChooserPanel('photo')
     ]
 
 
@@ -51,7 +51,6 @@ class StandardEquipmentPage(Page):
     related_link = models.URLField(blank=True, null=True)
     purpose = RichTextField(blank=True, null=True)
     spec = RichTextField("Specification and performance", blank=True, null=True)
-    photos = RichTextField(blank=True, null=True)
     extra = RichTextField(blank=True, null=True)
 
     content_panels = Page.content_panels + [
