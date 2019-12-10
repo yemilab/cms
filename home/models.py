@@ -183,16 +183,27 @@ class StandardPage(Page):
 
 
 class SectionPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
     description = models.TextField(
         help_text='Text to describe the page',
         blank=True)
-    body = StreamField(
-        BaseStreamBlock(), verbose_name="Content block", blank=True, null=True
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
-        StreamFieldPanel('body'),
+        FieldPanel('description_ko', classname="full"),
     ]
 
 
