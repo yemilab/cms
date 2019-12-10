@@ -145,22 +145,40 @@ class FaqIndexPage(Page):
 
 
 class StandardPage(Page):
-    title_ko = models.CharField("Title (Korean)", max_length=255, blank=True, null=True)
-    translated_title = TranslatedField(
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
         'title',
         'title_ko',
     )
     description = models.TextField(
+        "Description (English)",
         help_text='Text to describe the page',
         blank=True)
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
+    )
     body = StreamField(
-        BaseStreamBlock(), verbose_name="Content block", blank=True, null=True
+        BaseStreamBlock(), verbose_name="Content block (English)", blank=True, null=True
+    )
+    body_ko = StreamField(
+        BaseStreamBlock(), verbose_name="Content block (Korean)", blank=True, null=True
+    )
+    tr_body = TranslatedField(
+        'body',
+        'body_ko'
     )
 
     content_panels = Page.content_panels + [
         FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
+        FieldPanel('description_ko', classname="full"),
         StreamFieldPanel('body'),
+        StreamFieldPanel('body_ko'),
     ]
 
 
