@@ -92,20 +92,19 @@
 		  </div>
 	  </div>
 	  <div class="row">
-      {% for news in page.news %}
+      {% for n in news %}
      	<div class="col-md-4">
         <article class="grid-item loop-item" id="post-2097">
 	        <div class="image">
-	  	      <a href="https://cupweb.ibs.re.kr/news/2019/07/first-result-of-annual-modulation-search-has-been-published-in-phys-rev-lett/ "><img width="500" height="367" src="https://i2.wp.com/cupweb.ibs.re.kr/wp-content/uploads/sites/3/2019/07/medium.png?fit=500%2C367&amp;ssl=1" class="attachment-large size-large wp-post-image jetpack-lazy-image" alt="" data-lazy-srcset="https://i2.wp.com/cupweb.ibs.re.kr/wp-content/uploads/sites/3/2019/07/medium.png?w=500&amp;ssl=1 500w, https://i2.wp.com/cupweb.ibs.re.kr/wp-content/uploads/sites/3/2019/07/medium.png?resize=300%2C220&amp;ssl=1 300w" data-lazy-sizes="(max-width: 500px) 100vw, 500px" data-lazy-src="https://i2.wp.com/cupweb.ibs.re.kr/wp-content/uploads/sites/3/2019/07/medium.png?fit=500%2C367&amp;ssl=1&amp;is-pending-load=1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" /></a> 
+            {% image n.cover_image width-320 as image %}
+	  	      <a href="{% slugurl n.slug %}"><img src="{{ image.url }}"  width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" class="img-fluid" /></a> 
         	</div>
 	        <div class="text">
 	  	      <p class="meta"> 
-	  		      <span class="date">July 26, 2019</span>
-	  		      <span> / </span>
-	  		      <span><a href="https://cupweb.ibs.re.kr/category/news/" rel="category tag">News</a>			</span>
+	  		      <span class="date">{{ n.date_published }}</span>
             </p>
         		<h5 class="entry-title">
-	  		      <a href="https://cupweb.ibs.re.kr/news/2019/07/first-result-of-annual-modulation-search-has-been-published-in-phys-rev-lett/ ">First result of annual modulation search has been published in Phys. Rev. Lett.</a> 
+	  		      <a href="{% slugurl n.slug %}">{{ n.title }}</a> 
         		</h5>
 	        </div>	
         </article>

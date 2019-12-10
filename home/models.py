@@ -21,7 +21,7 @@ from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
 from .blocks import BaseStreamBlock
-
+from blog.models import BlogIndexPage, BlogPage
 
 class TranslatedField:
     def __init__(self, en_field, ko_field):
@@ -258,10 +258,17 @@ class HomeHomeSliderRelationship(Orderable, models.Model):
 
 
 class HomePage(Page):
+    news_page = models.ForeignKey(
+        'wagtailcore.Page',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+    )
+
     content_panels = Page.content_panels + [
-        InlinePanel(
-            'home_homeslider_relationship', label="Slider(s)",
-            panels=None, min_num=1),
+        PageChooserPanel('news_page', 'blog.BlogIndexPage'),
+        InlinePanel('home_homeslider_relationship', label="Slider(s)", panels=None, min_num=1),
     ]
 
     subpage_types = ['SectionPage', ]
@@ -272,11 +279,11 @@ class HomePage(Page):
         ]
         return sliders
 
-    def news(self):
-        return ['', '', '']
-
-    def publications(self):
-        return ['', '', '']
+    def get_context(self, request):
+        context = super(HomePage, self).get_context(request)
+        if self.news_page != None:
+            context['news'] = BlogPage.objects.live().descendant_of(BlogIndexPage.objects.get(id=self.news_page.id)).order_by('-date_published')[:3]
+        return context
 
 
 class GalleryPage(Page):
