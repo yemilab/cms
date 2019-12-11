@@ -22,7 +22,7 @@ def get_current_section_page_title(context):
     current_section_page = Page.objects.ancestor_of(self).child_of(root_page).first()
     if current_section_page == None:
         current_section_page = self
-    return current_section_page.title
+    return current_section_page.specific_class.objects.get(id=current_section_page.id).tr_title
 
 
 def has_menu_children(page):
@@ -102,7 +102,7 @@ def sub_menu(context, calling_page=None):
     return {
         'calling_page': calling_page,
         'menuitems': menuitems,
-        'current_section_page': current_section_page,
+        'section_title': current_section_page.specific_class.objects.get(id=current_section_page.id).tr_title,
         'request': context['request'],
     }
 

@@ -2,7 +2,7 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
-{% if is_translated %}
+{% if page.is_translated %}
 {{ page.tr_body }}
 {% else %}
 {{ page.body }}
