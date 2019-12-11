@@ -12,6 +12,8 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
+from home.custom_fields import TranslatedField
+
 
 DATEFMT = [
     ('Y', 'Year'),
@@ -99,12 +101,28 @@ class PresentationPage(Page):
 
 
 class PresentationsIndexPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
     description = models.TextField(
+        "Description (English)",
         help_text='Text to describe the page',
         blank=True)
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
+    )
 
     content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
+        FieldPanel('description_ko', classname="full"),
     ]
 
     subpage_types = ['PresentationPage', ]
@@ -192,12 +210,28 @@ class PaperPage(Page):
 
 
 class PapersIndexPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
     description = models.TextField(
+        "Description (English)",
         help_text='Text to describe the page',
         blank=True)
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
+    )
 
     content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
+        FieldPanel('description_ko', classname="full"),
     ]
 
     subpage_types = ['PaperPage', ]
@@ -265,12 +299,28 @@ class ThesisPage(Page):
 
 
 class ThesesIndexPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
     description = models.TextField(
+        "Description (English)",
         help_text='Text to describe the page',
         blank=True)
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
+    )
 
     content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
+        FieldPanel('description_ko', classname="full"),
     ]
 
     subpage_types = ['ThesisPage', ]

@@ -12,12 +12,12 @@
       <ul id="primary-menu" class="menu nav-menu" aria-expanded="false">
       {% for menuitem in menuitems %}
         <li class="menu-item {% if menuitem.active %} active{% endif %}{% if menuitem.show_dropdown %} menu-item-has-children{% endif %}">
-          <a href="{% pageurl menuitem %}" role="menuitem">{{ menuitem.title }}</a>
+          <a href="{% pageurl menuitem %}" role="menuitem">{{ menuitem.tr_title }}</a>
           {% if menuitem.show_dropdown %}
             {% top_menu_children parent=menuitem %}
           {% endif %}
         </li>
-      {% endfor %}  
+      {% endfor %}
       </ul>
     </div>
   </div>

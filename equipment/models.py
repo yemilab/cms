@@ -10,6 +10,8 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
+from home.custom_fields import TranslatedField
+
 
 class EquipmentPhotoRelationship(Orderable, models.Model):
     equipment = ParentalKey(
@@ -79,12 +81,28 @@ class StandardEquipmentPage(Page):
 
 
 class EquipmentIndexPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
     description = models.TextField(
+        "Description (English)",
         help_text='Text to describe the page',
         blank=True)
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
+    )
 
     content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
+        FieldPanel('description_ko', classname="full"),
     ]
 
     subpage_types = ['StandardEquipmentPage', ]

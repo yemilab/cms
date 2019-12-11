@@ -1,7 +1,6 @@
 from datetime import date
 
 from django.db import models
-from django.utils import translation
 
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -21,18 +20,8 @@ from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
 from .blocks import BaseStreamBlock
+from .custom_fields import TranslatedField
 from blog.models import BlogIndexPage, BlogPage
-
-class TranslatedField:
-    def __init__(self, en_field, ko_field):
-        self.en_field = en_field
-        self.ko_field = ko_field
-
-    def __get__(self, instance, owner):
-        if translation.get_language() == 'ko':
-            return getattr(instance, self.ko_field)
-        else:
-            return getattr(instance, self.en_field)
 
 
 @register_snippet
