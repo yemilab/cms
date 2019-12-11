@@ -55,8 +55,7 @@ def top_menu(context, parent, calling_page=None):
         # if the variable passed as calling_page does not exist.
         menuitem.active = (calling_page.url_path.startswith(menuitem.url_path)
                            if calling_page else False)
-        page_class = Page.objects.get(id=menuitem.id).specific_class
-        menuitem.tr_title = page_class.objects.get(id=menuitem.id).tr_title
+        menuitem.tr_title = menuitem.specific_class.objects.get(id=menuitem.id).tr_title
     return {
         'calling_page': calling_page,
         'menuitems': menuitems,
@@ -77,8 +76,7 @@ def top_menu_children(context, parent, calling_page=None):
         # if the variable passed as calling_page does not exist.
         menuitem.active = (calling_page.url_path.startswith(menuitem.url_path)
                            if calling_page else False)
-        page_class = Page.objects.get(id=menuitem.id).specific_class
-        menuitem.tr_title = page_class.objects.get(id=menuitem.id).tr_title
+        menuitem.tr_title = menuitem.specific_class.objects.get(id=menuitem.id).tr_title
         menuitem.children = menuitem.get_children().live().in_menu()
     return {
         'parent': parent,
@@ -99,12 +97,27 @@ def sub_menu(context, calling_page=None):
         menuitem.show_dropdown = has_menu_children(menuitem)
         menuitem.active = (calling_page.url_path.startswith(menuitem.url_path)
                            if calling_page else False)
-        page_class = Page.objects.get(id=menuitem.id).specific_class
-        menuitem.tr_title = page_class.objects.get(id=menuitem.id).tr_title
+        menuitem.tr_title = menuitem.specific_class.objects.get(id=menuitem.id).tr_title
         menuitem.children = menuitem.get_children().live().in_menu()
     return {
         'calling_page': calling_page,
         'menuitems': menuitems,
         'current_section_page': current_section_page,
+        'request': context['request'],
+    }
+
+@register.inclusion_tag('tags/sub_menu_children.html', takes_context=True)
+def sub_menu_children(context, parent, calling_page=None):
+    menuitems_children = parent.get_children()
+    menuitems_children = menuitems_children.live().in_menu()
+    for menuitem in menuitems_children:
+        menuitem.has_dropdown = has_menu_children(menuitem)
+        menuitem.active = (calling_page.url_path.startswith(menuitem.url_path)
+                           if calling_page else False)
+        menuitem.tr_title = menuitem.specific_class.objects.get(id=menuitem.id).tr_title
+        menuitem.children = menuitem.get_children().live().in_menu()
+    return {
+        'parent': parent,
+        'menuitems_children': menuitems_children,
         'request': context['request'],
     }

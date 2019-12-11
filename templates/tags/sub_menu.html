@@ -8,13 +8,7 @@
   <li class="menu-item {% if menuitem.active %} active{% endif %}{% if menuitem.show_dropdown %} menu-item-has-children{% endif %}">
     <a href="{% pageurl menuitem %}" role="menuitem">{{ menuitem.tr_title }}</a>
     {% if menuitem.show_dropdown %}
-    <ul class="sub-menu">
-      {% for child in menuitem.children %}
-      <li class="menu-item {% if menuitem.active %} active{% endif %}">
-        <a href="{% pageurl child %}" role="menuitem">{{ child.tr_title }}</a>
-      </li>
-      {% endfor %}
-    </ul>
+      {% sub_menu_children parent=menuitem %}
     {% endif %}
   </li>
   {% endfor %}
