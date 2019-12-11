@@ -92,10 +92,33 @@ class PersonPeopleIndexRelationship(Orderable, models.Model):
 
 
 class PeopleIndexPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
+    description = models.TextField(
+        "Description (English)",
+        help_text='Text to describe the page',
+        blank=True)
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
+    )
+
     content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
+        FieldPanel('description', classname="full"),
+        FieldPanel('description_ko', classname="full"),
         InlinePanel(
-            'peopleindex_person_relationship', label="Members(s)",
-            panels=None, min_num=1),
+            'peopleindex_person_relationship',
+            label="Members(s)",
+            panels=None
+        ),
     ]
 
     def members(self):
@@ -103,19 +126,45 @@ class PeopleIndexPage(Page):
 
 
 class FaqPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
     description = models.TextField(
+        "Description (English)",
         help_text='Text to describe the page',
         blank=True)
-    body = StreamField(
-        BaseStreamBlock(), verbose_name="Content block", blank=True, null=True
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
     )
+    body = StreamField(
+        BaseStreamBlock(), verbose_name="Content block (English)", blank=True, null=True
+    )
+    body_ko = StreamField(
+        BaseStreamBlock(), verbose_name="Content block (Korean)", blank=True, null=True
+    )
+    tr_body = TranslatedField(
+        'body',
+        'body_ko'
+    )
+    is_translated = models.BooleanField()
     date_published = models.DateField(
         "Date article published", blank=True, null=True
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
+        FieldPanel('description_ko', classname="full"),
+        FieldPanel('is_translated'),
         StreamFieldPanel('body'),
+        StreamFieldPanel('body_ko'),
         FieldPanel('date_published'),
     ]
 
@@ -124,16 +173,28 @@ class FaqPage(Page):
 
 
 class FaqIndexPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
     description = models.TextField(
+        "Description (English)",
         help_text='Text to describe the page',
         blank=True)
-    body = StreamField(
-        BaseStreamBlock(), verbose_name="Content block", blank=True, null=True
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
-        StreamFieldPanel('body'),
+        FieldPanel('description_ko', classname="full"),
     ]
 
     def get_context(self, request):
@@ -172,9 +233,11 @@ class StandardPage(Page):
         'body',
         'body_ko'
     )
+    is_translated = models.BooleanField()
 
     content_panels = Page.content_panels + [
         FieldPanel('title_ko'),
+        FieldPanel('is_translated'),
         FieldPanel('description', classname="full"),
         FieldPanel('description_ko', classname="full"),
         StreamFieldPanel('body'),
@@ -323,9 +386,23 @@ class GalleryPage(Page):
 
 
 class GalleriesIndexPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
     description = models.TextField(
+        "Description (English)",
         help_text='Text to describe the page',
         blank=True)
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
+    )
     image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -335,7 +412,9 @@ class GalleriesIndexPage(Page):
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
+        FieldPanel('description_ko', classname="full"),
         ImageChooserPanel('image'),
     ]
 
@@ -370,12 +449,28 @@ class CareerPage(Page):
 
 
 class CareersIndexPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
     description = models.TextField(
+        "Description (English)",
         help_text='Text to describe the page',
         blank=True)
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
+    )
 
     content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
+        FieldPanel('description_ko', classname="full"),
     ]
 
     subpage_types = ['CareerPage']
