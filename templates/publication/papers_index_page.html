@@ -15,9 +15,18 @@
           <a href="{% pageurl paper %}">{{ paper.title }}</a> 
         </h5>
         <p class="meta"> 
-          <span class="date">{{ paper.date }}</span> <span>by {{ paper.author }}</span>
+          <span class="date">
+            {% if paper.date_fmt == 'YM' %}
+              {{ paper.date|date:'Y-m' }}
+            {% elif paper.date_fmt == 'Y' %}
+              {{ paper.date|date:'Y' }}
+            {% else %}
+              {{ paper.date }}
+            {% endif %}
+          </span>
+          <span>by {{ paper.authors }}</span>
         </p>
-      </div>      
+      </div>
     </div>
   </article>
   {% endfor %}

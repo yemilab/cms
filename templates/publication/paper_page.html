@@ -2,5 +2,52 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
-<span class="date">{{ page.date }}</span> <span>by {{ page.author }}</span>
+<h3>{{ page.title }}</h3>
+<div class="page-overview">
+  <ul>
+    <li><span class="key">Date</span>
+      {% if page.date_fmt == 'YM' %}
+        {{ page.date|date:'Y-m' }}
+      {% elif page.date_fmt == 'Y' %}
+        {{ page.date|date:'Y' }}
+      {% else %}
+        {{ page.date }}
+      {% endif %}
+    </li>
+    <li>
+      <span class="key">Authors</span>
+      {{ page.authors }}
+    </li>
+    <li><span class="key">Journal</span>
+      {{ page.journal.title }}, {{ page.refinfo }}
+    </li>
+    <li><span class="key">Type</span>
+      {% if page.papertype == 'JA' %}
+        Journal article
+      {% elif page.papertype == 'CP' %}
+        Conference proceeding
+      {% else %}
+        Unknown
+      {% endif %}
+    </li>
+    {% if page.doi|length > 0 %}
+    <li><span class="key">DOI</span>
+      {{ page.doi }}
+    </li>
+    {% endif %}
+    {% if page.permalink|length > 0 %}
+    <li><span class="key">Permalink</span>
+      {{ page.permalink }}
+    </li>
+    {% endif %}
+  </ul>
+</div>
+<div>
+  <h4>Abstract</h4>
+  {{ page.abstract|richtext }}
+</div>
+<div>
+  <h4>Extra</h4>
+  {{ page.extra|richtext }}
+</div>
 {% endblock content %}

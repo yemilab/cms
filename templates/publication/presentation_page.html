@@ -2,5 +2,40 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
-<span class="date">{{ page.date }}</span> <span>by {{ page.author }}</span>
+<h3>{{ page.title }}</h3>
+<div class="page-overview">
+  <ul>
+    <li><span class="key">Date</span>
+      {% if page.date_fmt == 'YM' %}
+        {{ page.date|date:'Y-m' }}
+      {% elif page.date_fmt == 'Y' %}
+        {{ page.date|date:'Y' }}
+      {% else %}
+        {{ page.date }}
+      {% endif %}
+    </li>
+    <li>
+      <span class="key">Presentor</span>
+      {{ page.presentor }}
+    </li>
+    <li><span class="key">Meeting</span>
+      {{ page.meeting }}
+      {% if page.country|length > 0 and page.location|length > 0 %}
+        ({{page.location}}, {{page.country}})
+      {% elif page.country|length > 0 %}
+        ({{page.country}})
+      {% elif page.location|length > 0 %}
+        ({{page.location}})
+      {% endif %}
+    </li>
+  </ul>
+</div>
+<div>
+  <h4>Abstract</h4>
+  {{ page.abstract|richtext }}
+</div>
+<div>
+  <h4>Extra</h4>
+  {{ page.extra|richtext }}
+</div>
 {% endblock content %}
