@@ -175,7 +175,6 @@ class PaperPage(Page):
     extra = RichTextField(blank=True, null=True)
     tags = ClusterTaggableManager(through=PaperPageTag, blank=True)
     authors = models.TextField()
-    papertype = models.CharField("Paper type", max_length=8, choices=PAPERTYPE, default='JA')
     journal = models.ForeignKey(
         'publication.Journal',
         null=True,
@@ -183,7 +182,9 @@ class PaperPage(Page):
         on_delete=models.SET_NULL,
         related_name='+',
     )
-    refinfo = models.CharField("Volume, Issue, Page", max_length=250, blank=True, null=True)
+    volume = models.CharField(max_length=64, blank=True, null=True)
+    issue = models.CharField(max_length=64, blank=True, null=True)
+    page = models.CharField(max_length=64, blank=True, null=True)
     doi = models.CharField(max_length=250, blank=True, null=True)
     permalink = models.URLField("Permanent link", blank=True, null=True)
     bibtex = models.TextField(blank=True, null=True)
@@ -192,9 +193,16 @@ class PaperPage(Page):
         FieldPanel('is_featured'),
         ImageChooserPanel('cover_image'),
         FieldPanel('authors'),
-        FieldPanel('papertype'),
-        FieldPanel('journal'),
-        FieldPanel('refinfo'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('journal'),
+            ]),
+            FieldRowPanel([
+                FieldPanel('volume'),
+                FieldPanel('issue'),
+                FieldPanel('page'),
+            ]),
+        ], "Reference information"),
         FieldPanel('date_fmt'),
         FieldPanel('date'),
         FieldPanel('tags'),
