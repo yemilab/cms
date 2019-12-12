@@ -5,7 +5,7 @@
 <div class="page-overview">
   <div class="row">
     <div class="col-md-6">
-      {% image page.cover_photo width-640 as photo %}
+      {% image page.cover_photo max-640x640 as photo %}
       <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" class="img-fluid" />
     </div>
     <div class="col-md-6">
@@ -31,4 +31,9 @@
 {{ page.purpose|richtext }}
 <h3>SPECIFICATION AND PERFORMANCE</h3>
 {{ page.spec|richtext }}
+{% for photo in page.photos %}
+<h3>MORE PHOTO(S)</h3>
+{% image photo width-640 %}
+<img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" class="img-fluid" />
+{% endfor %}
 {% endblock content %}

@@ -76,8 +76,8 @@ class StandardEquipmentPage(Page):
     parent_page_types = ['EquipmentIndexPage']
     subpage_types = []
 
-    def authors(self):
-        return [ n.person for n in self.equipment_photo_relationship.all() ]
+    def photos(self):
+        return [ n.photo for n in self.equipment_photo_relationship.all() ]
 
 
 class EquipmentIndexPage(Page):

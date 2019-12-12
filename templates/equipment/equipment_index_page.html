@@ -5,14 +5,16 @@
 {% if equipment %}
 <div class="row">
   {% for e in equipment %}
-  <div class="col-md-6">
+  <div class="col-md-4">
     <article class="grid-item loop-item">
+      {% if e.cover_photo != None %}
       <div class="image">
         <a href="{% pageurl e %}">
           {% image e.cover_photo fill-300x300 as photo %}
           <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" />
         </a>
       </div>
+      {% endif %}
       <div class="text">
         <p class="meta"> 
           <span class="date">{{ e.manufacturer }}</span>
@@ -24,6 +26,15 @@
     </article>  
   </div>
   {% endfor %}  
+  {% if equipment.paginator.count > 1 %}
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+          {% include "includes/pagination.html" with subpages=equipment %}
+          </div>
+      </div>
+  </div>
+  {% endif %}  
 </div>
 {% endif %}
 {% endblock content %}
