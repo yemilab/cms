@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.db import models
 from django.shortcuts import redirect, render
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, RichTextField, StreamFieldPanel
 from wagtail.core.models import Page, Orderable
@@ -142,10 +143,25 @@ class SeminarsIndexPage(Page):
 
     subpage_types = ['SeminarPage']
 
+    def get_seminars(self):
+        return SeminarPage.objects.live().descendant_of(self).order_by('-date')
+
     def children(self):
         return self.get_children().specific().live()
 
     def get_context(self, request):
         context = super(SeminarsIndexPage, self).get_context(request)
-        context['posts'] = SeminarPage.objects.descendant_of(self).live().order_by('-date')
+        seminars = self.paginate(request, self.get_seminars())
+        context['seminars'] = seminars
         return context
+
+    def paginate(self, request, *args):
+        page = request.GET.get('page')
+        paginator = Paginator(self.get_seminars(), 12)
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+        return pages

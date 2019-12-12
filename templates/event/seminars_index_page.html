@@ -2,8 +2,8 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
-{% if posts %}
-  {% for seminar in posts %}
+{% if seminars %}
+  {% for seminar in seminars %}
   <article class="row list-icon-item loop-item ml-2">
       <div class="text">
         <h5 class="entry-title">
@@ -22,11 +22,18 @@
               <span class="key">Place</span>
               <span>{{ seminar.place }}</span>
             </p>
-          <p>Abstract</p>
-          {{ seminar.abstract|richtext }}
         </div>
       </div>	
     </article>
   {% endfor %}
+  {% if seminars.paginator.count > 1 %}
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+          {% include "includes/pagination.html" with subpages=seminars %}
+          </div>
+      </div>
+  </div>
+  {% endif %}
 {% endif %}
 {% endblock content %}

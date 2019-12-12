@@ -2,6 +2,7 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
+<h3>{{ page.title }}</h3>
 <div class="page-overview">
   <ul>
     <li><span class="key">Date</span>
@@ -17,6 +18,11 @@
   </ul>
 </div>
 <div>
+  <h4>Abstact</h4>
   {{ page.abstract|richtext }}
+</div>
+<div>
+  <h4>Extra</h4>
+  {{ page.extra|richtext }}
 </div>
 {% endblock content %}
