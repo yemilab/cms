@@ -5,12 +5,14 @@
 {% for member in page.members %}
 <article class="row people-item loop-item" id="post-1304">
   <div class="col-md-3 image">
+    {% if member.photo != None %}
     <div class="people_image">
       {% image member.photo fill-150x200 as photo %}
       <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" />
     </div>
+    {% endif %}
     <div class="people_profile">
-        {% if member.name|length > 0 %}
+        {% if member.name != None %}
         <h5>{{ member.name }} ({{ member.first_name }} {{ member.last_name }})</h5>
         {% else %}
         <h5>{{ member.first_name }} {{ member.last_name }}</h5>
