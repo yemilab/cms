@@ -2,7 +2,7 @@
 {% get_site_root as site_root %}
 <nav class="navbar fixed-top main-navigation" id="site-navigation">
   <div class="container">
-    <a class="navbar-brand" rel="home" href="/" title="Center for Underground Physics" itemprop="url">
+    <a class="navbar-brand" rel="home" href="{% pageurl request.site.root_page %}" title="Center for Underground Physics" itemprop="url">
       <img src="{% static 'img/logo.png' %}">
     </a>
     <button class="menu-toggle ml-auto" aria-controls="primary-menu" aria-expanded="false">
