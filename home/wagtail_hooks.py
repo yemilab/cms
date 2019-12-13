@@ -1,7 +1,8 @@
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, ModelAdminGroup, modeladmin_register
 )
-from .models import Person
+from .models import Person, HomeSlider
+from publication.models import Journal
 
 '''
 N.B. To see what icons are available for use in Wagtail menus and StreamField block types,
@@ -22,11 +23,29 @@ font-awesome icon set is available to you. Options are at http://fontawesome.io/
 
 class PeopleModelAdmin(ModelAdmin):
     model = Person
-    menu_label = 'People'  # ditch this to use verbose_name_plural from model
-    menu_icon = 'fa-users'  # change as required
-    list_display = ('name', 'first_name', 'last_name', 'affiliation', 'email', 'phone')
+    menu_label = 'People'
+    menu_icon = 'fa-users'
+    list_display = ('last_name', 'first_name', 'name', 'affiliation', 'email', 'phone')
+    ordering = ('name', 'last_name', 'first_name')
+
+
+class JournalModelAdmin(ModelAdmin):
+    model = Journal
+    menu_label = 'Journal'
+    menu_icon = 'fa-book'
+    list_display = ('title', 'abbreviation')
+    ordering = ('title', )
+
+class HomeSliderModelAdmin(ModelAdmin):
+    model = HomeSlider
+    menu_label = 'Home sliders'
+    menu_icon = 'fa-bullhorn'
+    list_display = ('title', 'subtitle', 'description', 'date_published')
+    ordering = ('-date_published', )
 
 
 # When using a ModelAdminGroup class to group several ModelAdmin classes together,
 # you only need to register the ModelAdminGroup class with Wagtail:
 modeladmin_register(PeopleModelAdmin)
+modeladmin_register(JournalModelAdmin)
+modeladmin_register(HomeSliderModelAdmin)
