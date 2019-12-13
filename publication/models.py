@@ -9,6 +9,7 @@ from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.documents.edit_handlers import DocumentChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
@@ -30,6 +31,25 @@ PAPERTYPE = [
     ('CP', 'Conference proceeding'),
     ('JA', 'Journal article')
 ]
+
+NOTEGROUP = [
+    ('GENERAL', 'GENERAL'),
+    ('KIMS', 'KIMS'),
+    ('AMORE', 'AMORE'),
+    ('SBL', 'SBL'),
+    ('SIMULATION', 'SIMULATION'),
+]
+
+NOTECLASSIFICATION = [
+    ('PHYS', 'PHYS'),
+    ('ANAL', 'ANAL'),
+    ('HARD', 'HARD'),
+    ('SOFT', 'SOFT'),
+    ('THESIS', 'THESIS'),
+    ('PUB', 'PUB'),
+    ('DOC', 'DOC'),
+]
+
 
 @register_snippet
 class Journal(models.Model):
@@ -355,4 +375,98 @@ class ThesesIndexPage(Page):
         context = super(ThesesIndexPage, self).get_context(request)
         theses = self.paginate(request, self.get_theses())
         context['theses'] = theses
+        return context
+
+
+class NotePersonRelationship(Orderable, models.Model):
+    note = ParentalKey(
+        'NotePage', related_name='note_document_relationship', on_delete=models.CASCADE
+    )
+    document = models.ForeignKey(
+        'wagtaildocs.Document', related_name='document_note_relationship', on_delete=models.CASCADE
+    )
+    panels = [
+        DocumentChooserPanel('document')
+    ]
+
+
+class NotePageTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'NotePage',
+        related_name='tagged_items',
+        on_delete=models.CASCADE
+    )
+
+
+class NotePage(Page):
+    date = models.DateField("Published date")
+    tags = ClusterTaggableManager(through=NotePageTag, blank=True)
+    group = models.CharField(max_length=64, choices=NOTEGROUP)
+    classification = models.CharField(max_length=64, choices=NOTECLASSIFICATION)
+    number = models.IntegerField(unique=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('date'),
+        FieldPanel('group'),
+        FieldPanel('classification'),
+        FieldPanel('number'),
+        InlinePanel(
+            'note_document_relationship', label="Document(s)",
+            panels=None, min_num=1),
+        FieldPanel('tags'),
+    ]
+
+    subpage_types = [ ]
+    parent_page_types = ['NotesIndexPage', ]
+
+
+class NotesIndexPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
+    description = models.TextField(
+        "Description (English)",
+        help_text='Text to describe the page',
+        blank=True)
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
+        FieldPanel('description', classname="full"),
+        FieldPanel('description_ko', classname="full"),
+    ]
+
+    subpage_types = ['NotePage', ]
+    parent_page_types = ['home.SectionPage', ]
+
+    def get_notes(self):
+        return NotePage.objects.live().descendant_of(self).order_by('-date')
+
+    def children(self):
+        return self.get_children().specific().live()
+
+    def paginate(self, request, *args):
+        page = request.GET.get('page')
+        paginator = Paginator(self.get_notes(), 12)
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+        return pages
+
+    def get_context(self, request):
+        context = super(NotesIndexPage, self).get_context(request)
+        notes = self.paginate(request, self.get_notes())
+        context['notes'] = notes
         return context
