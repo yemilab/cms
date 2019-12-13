@@ -7,16 +7,6 @@
   <article class="row list-item loop-item">
   	<div class="text">
       {{ tweet.body|richtext }}
-  		<p class="meta"> 
-        {% if tweet.date_published %}
-        <span class="date">{{ tweet.date_published }}</span>
-        {% endif %}
-  			<span>by 
-        {% for author in tweet.authors %}
-          {{ author }}{% if not forloop.last %}, {% endif %}
-        {% endfor %}
-  			</span>
-  		</p>
   	</div>
   </article><!-- #post-## -->
   {% endfor %}
