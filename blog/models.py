@@ -167,18 +167,6 @@ class BlogIndexPage(RoutablePageMixin, Page):
         return tags
 
 
-class TweetPersonRelationship(Orderable, models.Model):
-    page = ParentalKey(
-        'TweetPage', related_name='tweet_person_relationship', on_delete=models.CASCADE
-    )
-    person = models.ForeignKey(
-        'home.Person', related_name='person_tweet_relationship', on_delete=models.CASCADE
-    )
-    panels = [
-        SnippetChooserPanel('person')
-    ]
-
-
 class TweetPage(Page):
     body = RichTextField()
     date_published = models.DateField(
@@ -188,13 +176,8 @@ class TweetPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('body'),
         FieldPanel('date_published'),
-        InlinePanel(
-            'tweet_person_relationship', label="Author(s)",
-            panels=None, min_num=1),
     ]
 
-    def authors(self):
-        return [ n.person for n in self.tweet_person_relationship.all() ]
 
     parent_page_types = ['TweetIndexPage']
     subpage_types = []
