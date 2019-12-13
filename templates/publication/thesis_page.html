@@ -33,8 +33,10 @@
   <h4>Abstract</h4>
   {{ page.abstract|richtext }}
 </div>
+{% if user.is_authenticated %}
 <div>
   <h4>Extra</h4>
   {{ page.extra|richtext }}
 </div>
+{% endif %}
 {% endblock content %}
