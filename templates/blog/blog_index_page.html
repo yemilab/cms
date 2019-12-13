@@ -6,8 +6,10 @@
   {% for blog in posts %}
   <article class="row list-item loop-item">
   	<div class="col-md-5 image">
+      {% if blog.cover_image != None %}
       {% image blog.cover_image width-640 as image %}
       <img src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" class="img-fluid" />
+      {% endif %}
   	</div>
   	<div class="col-md-7 text">
   		<h5 class="entry-title">
