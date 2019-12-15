@@ -35,6 +35,8 @@ class StandardEventPage(Page):
     is_allday = models.BooleanField()
     location = models.CharField(max_length=250)
     related_link = models.URLField(blank=True)
+    abstract_deadline = models.DateTimeField(blank=True, null=True)
+    our_speakers = models.TextField(blank=True, null=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('description', classname="full"),
@@ -44,7 +46,9 @@ class StandardEventPage(Page):
         FieldPanel('end'),
         FieldPanel('is_allday'),
         FieldPanel('location'),
-        FieldPanel('related_link')
+        FieldPanel('related_link'),
+        FieldPanel('abstract_deadline'),
+        FieldPanel('our_speakers'),
     ]
 
     parent_page_types = ['EventsIndexPage']
