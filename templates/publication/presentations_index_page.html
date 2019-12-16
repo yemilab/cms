@@ -2,16 +2,42 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
+<form action="{% pageurl self %}">
+  <div class="form-row align-items-center">
+    <div class="col-auto my-1">
+      <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Year</label>
+      <select name="year" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+        <option selected>Choose...</option>
+        <option value="2019">2019</option>
+        <option value="2018">2018</option>
+      </select>
+    </div>
+    <div class="col-auto my-1">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </div>
+</form>
 {% if presentations %}
-  {% for presentation in presentations %}
-  <article class="row list-item loop-item">
-    <ul>
-      <li>
-        <a href="{% pageurl presentation %}">{{ presentation.title }}</a>, {{ presentation.presentor }}, {{ presentation.meeting }}, {{ presentation.date|date:'Y' }}</a> 
-      </li>
-  </ul>
-  </article>
-  {% endfor %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Presentor</th>
+        <th>Meeting</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for presentation in presentations %}
+      <tr>
+        <td><a href="{% pageurl presentation %}">{{ presentation.title }}</a></td>
+        <td>{{ presentation.presentor }}</td>
+        <td>{{ presentation.meeting }}</td>
+        <td>{{ presentation.date }}</td>
+      </tr>
+    {% endfor %}  
+   </tbody>
+  </table>
   {% if presentations.paginator.count > 1 %}
   <div class="container">
       <div class="row">

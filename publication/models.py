@@ -181,7 +181,14 @@ class PresentationsIndexPage(Page):
 
     def get_context(self, request):
         context = super(PresentationsIndexPage, self).get_context(request)
-        presentations = self.paginate(request, self.get_presentations())
+        if 'year' in request.GET:
+            try:
+                year = int(request.GET['year'])
+            except ValueError:
+                year = 0
+            presentations = PresentationPage.objects.live().descendant_of(self).filter(date__year=year).order_by('-date')
+        else:
+            presentations = self.paginate(request, self.get_presentations())
         context['presentations'] = presentations
         return context
 
