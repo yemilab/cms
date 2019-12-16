@@ -2,33 +2,39 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
-{% if theses %}
-  {% for thesis in theses %}
-  <article class="row list-item loop-item">
-    <div class="col-md-4 image">
-      <div class="image">
-      </div>
-    </div>
-    <div class="col-md-8">
-      <div class="text">
-        <h5 class="entry-title">
-          <a href="{% pageurl thesis %}">{{ thesis.title }}</a> 
-        </h5>
-        <p class="meta"> 
-          <span class="date">{{ thesis.date }}</span> <span>by {{ thesis.author }}</span>
-        </p>
-      </div>      
-    </div>
-  </article>
-  {% endfor %}
-  {% if theses.paginator.count > 1 %}
-  <div class="container">
-      <div class="row">
-          <div class="col-md-12">
-          {% include "includes/pagination.html" with subpages=theses %}
-          </div>
-      </div>
+<form action="{% pageurl self %}" class="form-inline">
+  <div class="form-row align-items-center">
+    <label class="my-1 mr-2" for="inlineFormYearSelect">Year</label>
+    <select name="year" class="custom-select my-1 mr-sm-2" id="inlineFormYearSelect">
+      <option value="all"{% if selected_year == 'all' %} selected{% endif %}>All</option>
+      {% for year in years %}
+      <option value="{{ year }}"{% if selected_year == year %} selected{% endif %}>{{ year }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Submit</button>
   </div>
-  {% endif %}
+</form>
+{% if theses %}
+{% for thesis in theses %}
+<article class="row list-item loop-item">
+  <ul>
+    <li>
+      {{ thesis.author }}, ({{ thesis.date|date:'Y' }}).
+      <a href="{% pageurl thesis %}">{{ thesis.title }}</a>,
+      {% if thesis.degree == 'PhD' %}(Doctoral dissertation){% else %}(Master's thesis){% endif %}.
+      {{ thesis.publisher }}.
+    </li>
+  </ul>
+</article>
+{% endfor %}
+{% if theses.paginator.count > 1 %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+        {% include "includes/pagination.html" with subpages=theses %}
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endif %}
 {% endblock content %}

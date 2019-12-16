@@ -181,7 +181,6 @@ class PresentationsIndexPage(Page):
         else: # if (request.GET.get('year') in [None, '']) is True, presentation_year will be this year.
             presentation_year = datetime.now().year
             presentations = presentations.filter(date__year=presentation_year)
-
         if not request.GET.get('type') in [None, '']:
             presentation_type = request.GET.get('type')
             presentations = presentations.filter(presentation_type=presentation_type)
@@ -318,7 +317,6 @@ class PapersIndexPage(Page):
         else: # if (request.GET.get('year') in [None, '']) is True, paper_year will be this year.
             paper_year = datetime.now().year
             papers = papers.filter(date__year=paper_year)
-
         if not request.GET.get('category') in [None, '']:
             paper_category = request.GET.get('category')
             papers = papers.filter(category__slug=paper_category)
@@ -395,25 +393,23 @@ class ThesesIndexPage(Page):
     subpage_types = ['ThesisPage', ]
     parent_page_types = ['home.SectionPage', ]
 
-    def get_theses(self):
-        return ThesisPage.objects.live().descendant_of(self).order_by('-date')
-
-    def children(self):
-        return self.get_children().specific().live()
-
-    def paginate(self, request, *args):
-        page = request.GET.get('page')
-        paginator = Paginator(self.get_theses(), 12)
-        try:
-            pages = paginator.page(page)
-        except PageNotAnInteger:
-            pages = paginator.page(1)
-        except EmptyPage:
-            pages = paginator.page(paginator.num_pages)
-        return pages
-
     def get_context(self, request):
         context = super(ThesesIndexPage, self).get_context(request)
-        theses = self.paginate(request, self.get_theses())
-        context['theses'] = theses
+        theses = ThesisPage.objects.live().descendant_of(self)
+        thesis_year = None
+        if request.GET.get('year') == 'all':
+            pass
+        elif not request.GET.get('year') in [None, '']:
+            try:
+                thesis_year = int(request.GET.get('year'))
+                theses = theses.filter(date__year=thesis_year)
+            except ValueError:
+                pass
+        else: # if (request.GET.get('year') in [None, '']) is True, thesis_year will be this year.
+            thesis_year = datetime.now().year
+            theses = theses.filter(date__year=thesis_year)
+        context['theses'] = theses.order_by('-date')
+        context['categories'] = Category.objects.all().order_by('name')
+        context['years'] = range(datetime.now().year, 2012, -1)
+        context['selected_year'] = thesis_year
         return context
