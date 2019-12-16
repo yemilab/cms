@@ -81,11 +81,13 @@ class EventsIndexPage(Page):
         'description',
         'description_ko',
     )
+    view_type = models.CharField(max_length=64, choices=[('list', 'List'), ('table', 'Table')], default='list')
 
     content_panels = Page.content_panels + [
         FieldPanel('title_ko'),
         FieldPanel('description', classname="full"),
         FieldPanel('description_ko', classname="full"),
+        FieldPanel('view_type'),
     ]
 
     subpage_types = ['StandardEventPage']
