@@ -29,25 +29,14 @@ DEGREE = [
 
 PAPERTYPE = [
     ('CP', 'Conference proceeding'),
-    ('JA', 'Journal article')
+    ('JA', 'Journal article'),
 ]
 
-NOTEGROUP = [
-    ('GENERAL', 'GENERAL'),
-    ('KIMS', 'KIMS'),
-    ('AMORE', 'AMORE'),
-    ('SBL', 'SBL'),
-    ('SIMULATION', 'SIMULATION'),
-]
-
-NOTECLASSIFICATION = [
-    ('PHYS', 'PHYS'),
-    ('ANAL', 'ANAL'),
-    ('HARD', 'HARD'),
-    ('SOFT', 'SOFT'),
-    ('THESIS', 'THESIS'),
-    ('PUB', 'PUB'),
-    ('DOC', 'DOC'),
+PRESENTATIONTYPE = [
+    ('INT', 'International conference'),
+    ('DOM', 'Domestic conference'),
+    ('SEM', 'Seminar'),
+    ('ETC', 'etc.'),
 ]
 
 
@@ -61,6 +50,19 @@ class Journal(models.Model):
 
     class Meta:
         verbose_name_plural = "Journals"
+
+
+@register_snippet
+class Category(models.Model):
+    name = models.CharField(max_length=256)
+    slug = models.SlugField()
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
 
 class PresentationPageTag(TaggedItemBase):
@@ -95,6 +97,14 @@ class PresentationPage(Page):
     meeting = models.CharField(max_length=512)
     country = models.CharField(max_length=256, blank=True, null=True)
     location = models.CharField(max_length=256, blank=True, null=True)
+    presentation_type = models.CharField(max_length=64, choices=PRESENTATIONTYPE, blank=True, null=True)
+    category = models.ForeignKey(
+        'publication.Category',
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name='+',
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel('is_featured'),
@@ -108,6 +118,10 @@ class PresentationPage(Page):
                 FieldPanel('country', classname="col6"),
                 FieldPanel('location', classname="col6"),
             ]),
+            FieldRowPanel([
+                FieldPanel('presentation_type', classname="col6"),
+                FieldPanel('category', classname="col6"),
+            ])
         ], "Meeting information"),
         FieldPanel('date_fmt'),
         FieldPanel('date'),
@@ -208,6 +222,13 @@ class PaperPage(Page):
     doi = models.CharField(max_length=250, blank=True, null=True)
     permalink = models.URLField("Permanent link", blank=True, null=True)
     bibtex = models.TextField(blank=True, null=True)
+    category = models.ForeignKey(
+        'publication.Category',
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name='+',
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel('is_featured'),
@@ -225,6 +246,7 @@ class PaperPage(Page):
         ], "Reference information"),
         FieldPanel('date_fmt'),
         FieldPanel('date'),
+        FieldPanel('category'),
         FieldPanel('tags'),
         FieldPanel('doi'),
         FieldPanel('permalink'),
