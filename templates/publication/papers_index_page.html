@@ -5,29 +5,14 @@
 {% if papers %}
   {% for paper in papers %}
   <article class="row list-item loop-item">
-    <div class="col-md-4 image">
-      <div class="image">
-      </div>
-    </div>
-    <div class="col-md-8">
-      <div class="text">
-        <h5 class="entry-title">
-          <a href="{% pageurl paper %}">{{ paper.title }}</a> 
-        </h5>
-        <p class="meta"> 
-          <span class="date">
-            {% if paper.date_fmt == 'YM' %}
-              {{ paper.date|date:'Y-m' }}
-            {% elif paper.date_fmt == 'Y' %}
-              {{ paper.date|date:'Y' }}
-            {% else %}
-              {{ paper.date }}
-            {% endif %}
-          </span>
-          <span>by {{ paper.authors }}</span>
-        </p>
-      </div>
-    </div>
+    <ul>
+      <li>
+        <a href="{% pageurl paper %}">{{ paper.title }}</a>,
+        {{ paper.print_authors }},
+        {{ paper.journal.title }},
+        {{ paper.date|date:'Y' }}
+      </li>
+    </ul>
   </article>
   {% endfor %}
   {% if papers.paginator.count > 1 %}

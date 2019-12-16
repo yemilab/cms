@@ -258,6 +258,9 @@ class PaperPage(Page):
     subpage_types = [ ]
     parent_page_types = ['PapersIndexPage', ]
 
+    def print_authors(self):
+        return "{}, et al.".format(self.authors.split(';')[0])
+
 
 class PapersIndexPage(Page):
     title_ko = models.CharField("Title (Korean)", max_length=255)
