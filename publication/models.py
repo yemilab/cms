@@ -178,7 +178,7 @@ class PresentationsIndexPage(Page):
                 presentations = presentations.filter(date__year=presentation_year)
             except ValueError:
                 pass
-        else:
+        else: # if (request.GET.get('year') in [None, '']) is True, presentation_year will be this year.
             presentation_year = datetime.now().year
             presentations = presentations.filter(date__year=presentation_year)
 
@@ -302,27 +302,31 @@ class PapersIndexPage(Page):
     subpage_types = ['PaperPage', ]
     parent_page_types = ['home.SectionPage', ]
 
-    def get_papers(self):
-        return PaperPage.objects.live().descendant_of(self).order_by('-date')
-
-    def children(self):
-        return self.get_children().specific().live()
-
-    def paginate(self, request, *args):
-        page = request.GET.get('page')
-        paginator = Paginator(self.get_papers(), 12)
-        try:
-            pages = paginator.page(page)
-        except PageNotAnInteger:
-            pages = paginator.page(1)
-        except EmptyPage:
-            pages = paginator.page(paginator.num_pages)
-        return pages
-
     def get_context(self, request):
         context = super(PapersIndexPage, self).get_context(request)
-        papers = self.paginate(request, self.get_papers())
-        context['papers'] = papers
+        papers = PaperPage.objects.live().descendant_of(self)
+        paper_year = None
+        paper_category = None
+        if request.GET.get('year') == 'all':
+            pass
+        elif not request.GET.get('year') in [None, '']:
+            try:
+                paper_year = int(request.GET.get('year'))
+                papers = papers.filter(date__year=paper_year)
+            except ValueError:
+                pass
+        else: # if (request.GET.get('year') in [None, '']) is True, paper_year will be this year.
+            paper_year = datetime.now().year
+            papers = papers.filter(date__year=paper_year)
+
+        if not request.GET.get('category') in [None, '']:
+            paper_category = request.GET.get('category')
+            papers = papers.filter(category__slug=paper_category)
+        context['papers'] = papers.order_by('-date')
+        context['categories'] = Category.objects.all().order_by('name')
+        context['years'] = range(datetime.now().year, 2012, -1)
+        context['selected_year'] = paper_year
+        context['selected_category'] = paper_category
         return context
 
 

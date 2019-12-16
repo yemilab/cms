@@ -2,6 +2,25 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
+<form action="{% pageurl self %}" class="form-inline">
+  <div class="form-row align-items-center">
+    <label class="my-1 mr-2" for="inlineFormYearSelect">Year</label>
+    <select name="year" class="custom-select my-1 mr-sm-2" id="inlineFormYearSelect">
+      <option value="all"{% if selected_year == 'all' %} selected{% endif %}>All</option>
+      {% for year in years %}
+      <option value="{{ year }}"{% if selected_year == year %} selected{% endif %}>{{ year }}</option>
+      {% endfor %}
+    </select>
+    <label class="my-1 mr-2" for="inlineFormCategorySelect">Category</label>
+    <select name="category" class="custom-select my-1 mr-sm-2" id="inlineFormCategorySelect">
+      <option value {% if selected_category == None %} selected{% endif %}>All</option>
+      {% for category in categories %}
+      <option value="{{ category.slug }}"{% if selected_category == category.slug %} selected{% endif %}>{{ category.name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
 {% if papers %}
   {% for paper in papers %}
   <article class="row list-item loop-item">
