@@ -2,18 +2,30 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
+<form action="{% pageurl self %}" class="form-inline">
+  <div class="form-row align-items-center">
+    <label class="my-1 mr-2" for="inlineFormYearSelect">Year</label>
+    <select name="year" class="custom-select my-1 mr-sm-2" id="inlineFormYearSelect">
+      <option value="all"{% if selected_year == 'all' %} selected{% endif %}>All</option>
+      {% for year in years %}
+      <option value="{{ year }}"{% if selected_year == year %} selected{% endif %}>{{ year }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
 {% if events %}
   {% if page.view_type == 'list' %}
     {% for event in events %}
     <article class="grid-item loop-item">
       <div class="row">
+        {% if event.cover_image != None %}
         <div class="col-md-5 image">
-          {% if event.cover_image != None %}
           {% image event.cover_image fill-300x300 as image %}
           <img src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" class="" />
-          {% endif %}
         </div>
-        <div class="col-md-7 text">
+        {% endif %}
+        <div class="{% if event.cover_image != None %}col-md-7 {% else %}{% endif %}text">
           <h5 class="entry-title">
             <a href="{% pageurl event %}">{{ event.title }}</a> 
           </h5>

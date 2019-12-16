@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib import messages
 from django.db import models
 from django.shortcuts import redirect, render
@@ -92,12 +94,24 @@ class EventsIndexPage(Page):
 
     subpage_types = ['StandardEventPage']
 
-    def children(self):
-        return self.get_children().specific().live()
-
     def get_context(self, request):
         context = super(EventsIndexPage, self).get_context(request)
-        context['events'] = StandardEventPage.objects.descendant_of(self).live().order_by('-start')
+        events = StandardEventPage.objects.live().descendant_of(self)
+        year = None
+        if request.GET.get('year') == 'all':
+            pass
+        elif not request.GET.get('year') in [None, '']:
+            try:
+                year = int(request.GET.get('year'))
+                events = events.filter(start__year=year)
+            except ValueError:
+                pass
+        else: # if (request.GET.get('year') in [None, '']) is True, year will be this year.
+            year = datetime.now().year
+            events = events.filter(start__year=year)
+        context['events'] = events.order_by('-start')
+        context['years'] = range(datetime.now().year, 2012, -1)
+        context['selected_year'] = year
         return context
 
 
@@ -149,25 +163,22 @@ class SeminarsIndexPage(Page):
 
     subpage_types = ['SeminarPage']
 
-    def get_seminars(self):
-        return SeminarPage.objects.live().descendant_of(self).order_by('-date')
-
-    def children(self):
-        return self.get_children().specific().live()
-
     def get_context(self, request):
         context = super(SeminarsIndexPage, self).get_context(request)
-        seminars = self.paginate(request, self.get_seminars())
-        context['seminars'] = seminars
+        seminars = SeminarPage.objects.live().descendant_of(self)
+        year = None
+        if request.GET.get('year') == 'all':
+            pass
+        elif not request.GET.get('year') in [None, '']:
+            try:
+                year = int(request.GET.get('year'))
+                seminars = seminars.filter(date__year=year)
+            except ValueError:
+                pass
+        else: # if (request.GET.get('year') in [None, '']) is True, year will be this year.
+            year = datetime.now().year
+            seminars = seminars.filter(date__year=year)
+        context['seminars'] = seminars.order_by('-date')
+        context['years'] = range(datetime.now().year, 2012, -1)
+        context['selected_year'] = year
         return context
-
-    def paginate(self, request, *args):
-        page = request.GET.get('page')
-        paginator = Paginator(self.get_seminars(), 12)
-        try:
-            pages = paginator.page(page)
-        except PageNotAnInteger:
-            pages = paginator.page(1)
-        except EmptyPage:
-            pages = paginator.page(paginator.num_pages)
-        return pages
