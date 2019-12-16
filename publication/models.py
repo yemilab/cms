@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -162,34 +164,37 @@ class PresentationsIndexPage(Page):
     subpage_types = ['PresentationPage', ]
     parent_page_types = ['home.SectionPage', ]
 
-    def get_presentations(self):
-        return PresentationPage.objects.live().descendant_of(self).order_by('-date')
-
-    def children(self):
-        return self.get_children().specific().live()
-
-    def paginate(self, request, *args):
-        page = request.GET.get('page')
-        paginator = Paginator(self.get_presentations(), 12)
-        try:
-            pages = paginator.page(page)
-        except PageNotAnInteger:
-            pages = paginator.page(1)
-        except EmptyPage:
-            pages = paginator.page(paginator.num_pages)
-        return pages
-
     def get_context(self, request):
         context = super(PresentationsIndexPage, self).get_context(request)
-        if 'year' in request.GET:
+        presentations = PresentationPage.objects.live().descendant_of(self)
+        presentation_year = None
+        presentation_type = None
+        presentation_category = None
+        if request.GET.get('year') == 'all':
+            pass
+        elif not request.GET.get('year') in [None, '']:
             try:
-                year = int(request.GET['year'])
+                presentation_year = int(request.GET.get('year'))
+                presentations = presentations.filter(date__year=presentation_year)
             except ValueError:
-                year = 0
-            presentations = PresentationPage.objects.live().descendant_of(self).filter(date__year=year).order_by('-date')
+                pass
         else:
-            presentations = self.paginate(request, self.get_presentations())
-        context['presentations'] = presentations
+            presentation_year = datetime.now().year
+            presentations = presentations.filter(date__year=presentation_year)
+
+        if not request.GET.get('type') in [None, '']:
+            presentation_type = request.GET.get('type')
+            presentations = presentations.filter(presentation_type=presentation_type)
+        if not request.GET.get('category') in [None, '']:
+            presentation_category = request.GET.get('category')
+            presentations = presentations.filter(category__slug=presentation_category)
+        context['presentations'] = presentations.order_by('-date')
+        context['categories'] = Category.objects.all().order_by('name')
+        context['types'] = [ {'slug': slug, 'name': name} for slug, name in PRESENTATIONTYPE ]
+        context['years'] = range(datetime.now().year, 2012, -1)
+        context['selected_year'] = presentation_year
+        context['selected_type'] = presentation_type
+        context['selected_category'] = presentation_category
         return context
 
 
