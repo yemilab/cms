@@ -23,7 +23,6 @@
         </p>
         {% endif %}
     </div>
-    {% if member.email|length > 0 or member.homepage|length > 0 %}
     <div class="people_contact">
       {% if member.email|length > 0 %}
       <a href="mailto:{{ member.email }}"><i class="fa fa-envelope" aria-hidden="true"></i></a>
@@ -33,7 +32,6 @@
       {% endif %}
       <a href="{% slugurl 'profile' %}byid/{{ member.id }}"><i class="fa fa-user" aria-hidden="true"></i></a>
     </div>
-    {% endif %}
   </div>
   <div class="col-md-9 text">
       <div class="people_information">
