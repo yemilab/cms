@@ -1,5 +1,5 @@
 {% extends "content.html" %}
-{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags wagtailroutablepage_tags %}
 
 {% block content %}
 {% for member in page.members %}
@@ -31,6 +31,7 @@
       {% if member.homepage|length > 0 %}
       <a href="{{ member.homepage }}"><i class="fa fa-home" aria-hidden="true"></i></a>
       {% endif %}
+      <a href="{% slugurl 'profile' %}byid/{{ member.id }}"><i class="fa fa-user" aria-hidden="true"></i></a>
     </div>
     {% endif %}
   </div>

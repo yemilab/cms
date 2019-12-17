@@ -1,6 +1,7 @@
 from datetime import date
 
 from django.db import models
+from django.shortcuts import redirect, render
 
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -18,10 +19,12 @@ from wagtail.core.models import Collection, Page, Orderable
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from .blocks import BaseStreamBlock
 from .custom_fields import TranslatedField
 from blog.models import BlogIndexPage, BlogPage
+from publication.models import PresentationPage
 
 
 @register_snippet
@@ -66,6 +69,26 @@ class Person(ClusterableModel):
     class Meta:
         verbose_name = 'Person'
         verbose_name_plural = 'People'
+
+
+class ProfilePage(RoutablePageMixin, Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
+    ]
+
+    @route(r'^byid/([\d]+)/$', name='id')
+    def profile_byid(self, request, id):
+        context = super(ProfilePage, self).get_context(request)
+        person = Person.objects.get(id=id)
+        context['person'] = person
+        context['presentations'] = PresentationPage.objects.live().filter(presentor__id=id)
+        return render(request, 'home/profile_page.html', context)
 
 
 class PersonPeopleIndexRelationship(Orderable, models.Model):
@@ -323,7 +346,7 @@ class HomePage(Page):
         InlinePanel('home_homeslider_relationship', label="Slider(s)", panels=None, min_num=1),
     ]
 
-    subpage_types = ['SectionPage', ]
+    subpage_types = ['SectionPage', 'ProfilePage']
 
     def sliders(self):
         sliders = [
