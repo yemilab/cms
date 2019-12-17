@@ -2,6 +2,7 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags wagtailroutablepage_tags %}
 
 {% block content %}
+{% if page.view_type == 'list' %}
 {% for member in page.members %}
 <article class="row people-item loop-item" id="post-1304">
   <div class="col-md-3 image">
@@ -39,6 +40,12 @@
       </div>
   </div>
 </article>
-{% endfor %}    
-
+{% endfor %}
+{% else %}
+<ul>
+  {% for member in page.members %}
+  <li><a href="{% slugurl 'profile' %}byid/{{ member.id }}">{% if member.name != None %}{{ member.name }} ({{ member.first_name }} {{ member.last_name }}){% else %}{{ member.first_name }} {{ member.last_name }}{% endif %}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
 {% endblock content %}

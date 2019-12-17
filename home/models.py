@@ -24,7 +24,7 @@ from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from .blocks import BaseStreamBlock
 from .custom_fields import TranslatedField
 from blog.models import BlogIndexPage, BlogPage
-from publication.models import PresentationPage
+from publication.models import PresentationPage, ThesisPage
 
 
 @register_snippet
@@ -88,6 +88,7 @@ class ProfilePage(RoutablePageMixin, Page):
         person = Person.objects.get(id=id)
         context['person'] = person
         context['presentations'] = PresentationPage.objects.live().filter(presentor__id=id)
+        context['theses'] = ThesisPage.objects.live().filter(author__id=id)
         return render(request, 'home/profile_page.html', context)
 
 
@@ -121,6 +122,7 @@ class PeopleIndexPage(Page):
         'description',
         'description_ko',
     )
+    view_type = models.CharField(max_length=64, choices=[('list', 'List'), ('simple', 'Simple')], default='list')
 
     content_panels = Page.content_panels + [
         FieldPanel('title_ko'),
@@ -131,6 +133,7 @@ class PeopleIndexPage(Page):
             label="Members(s)",
             panels=None
         ),
+        FieldPanel('view_type')
     ]
 
     def members(self):

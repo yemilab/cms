@@ -11,4 +11,12 @@
   {% endfor %}  
 </ul>
 {% endif %}
+{% if theses %}
+<h3>{% if theses|length > 1 %}Theses{% else %}Thesis{% endif %}</h3>
+<ul>
+  {% for thesis in theses %}
+  <li><a href="{% pageurl thesis %}">{{ thesis.title }}</a></li>
+  {% endfor %}  
+</ul>
+{% endif %}
 {% endblock content %}
