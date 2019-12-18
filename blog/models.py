@@ -64,7 +64,7 @@ class BlogPage(Page):
         FieldPanel('date_published'),
         InlinePanel(
             'blog_person_relationship', label="Author(s)",
-            panels=None, min_num=1),
+            panels=None),
         FieldPanel('tags'),
     ]
 
