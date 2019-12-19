@@ -74,7 +74,7 @@
         </div>
         <div class="col-md-2 col-4">
           <div class="item">
-            <a href="{% slugurl 'careers' %}">
+            <a href="{% slugurl 'job-opening' %}">
               <img src="{% static 'img/ic_careers.png' %}" alt="">
               <h5>Careers</h5>
             </a>
@@ -96,7 +96,7 @@
      	<div class="col-md-4">
         <article class="grid-item loop-item" id="post-2097">
 	        <div class="image">
-            {% image n.cover_image width-320 as image %}
+            {% image n.cover_image fill-640x320 as image %}
 	  	      <a href="{% slugurl n.slug %}"><img src="{{ image.url }}"  width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" class="img-fluid" /></a> 
         	</div>
 	        <div class="text">
@@ -112,75 +112,5 @@
       {% endfor %}
     </div>
   </div>
-</section>
-<section id="publications">
-	<div class="container">
-		<div class="row section-title">
-			<div class="col-md-12">
-				<h3><span>Publications</span></h3>
-				<p><a href="{% slugurl 'papers' %}">View All Publications</a></p>
-			</div>
-		</div>
-		<div class="row">
-      {% for publication in page.publications %}
-  		<div class="col-md-4">
-        <article class="grid-item loop-item">
-    	    <div class="image">
-		        <a href="https://cupweb.ibs.re.kr/publications/a-search-for-dark-matter-with-naitl-crystal-of-the-kims-nai-2/ "><img width="640" height="320" src="https://i0.wp.com/cupweb.ibs.re.kr/wp-content/uploads/sites/3/2019/03/nature04.jpg?fit=640%2C320&amp;ssl=1" class="attachment-large size-large wp-post-image jetpack-lazy-image" alt="" data-lazy-srcset="https://i0.wp.com/cupweb.ibs.re.kr/wp-content/uploads/sites/3/2019/03/nature04.jpg?w=1920&amp;ssl=1 1920w, https://i0.wp.com/cupweb.ibs.re.kr/wp-content/uploads/sites/3/2019/03/nature04.jpg?resize=300%2C150&amp;ssl=1 300w, https://i0.wp.com/cupweb.ibs.re.kr/wp-content/uploads/sites/3/2019/03/nature04.jpg?resize=768%2C384&amp;ssl=1 768w, https://i0.wp.com/cupweb.ibs.re.kr/wp-content/uploads/sites/3/2019/03/nature04.jpg?resize=1024%2C512&amp;ssl=1 1024w, https://i0.wp.com/cupweb.ibs.re.kr/wp-content/uploads/sites/3/2019/03/nature04.jpg?w=1280&amp;ssl=1 1280w" data-lazy-sizes="(max-width: 640px) 100vw, 640px" data-lazy-src="https://i0.wp.com/cupweb.ibs.re.kr/wp-content/uploads/sites/3/2019/03/nature04.jpg?fit=640%2C320&amp;ssl=1&amp;is-pending-load=1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" /></a> 
-	        </div>
-	        <div class="text">
-		        <p class="meta"><span class="date">March 11, 2019</span><span> / </span><span>Type</span></p>
-		        <h5 class="entry-title">
-			        <a href="https://cupweb.ibs.re.kr/publications/a-search-for-dark-matter-with-naitl-crystal-of-the-kims-nai-2/ ">A Search for Dark Matter with NaI(Tl) Crystal of the KIMS-NaI</a> 
-        		</h5>
-	        </div>	
-        </article>
-      </div>
-      {% endfor %}
-		</div>
-	</div>	
-</section>
-<section id="collaborators">
-	<div class="container">
-		<div class="row section-title">
-			<div class="col-md-12">
-				<h3><span>Our Collaborators</span></h3>
-			</div>
-		</div>
-		<div class="container-fluid">
-			<div class="d-flex flex-nowrap" style="overflow-y: scroll;">
-			 	<div class="col-3">
-			 		<div class="item">
-			 			<img src="{% static 'img/logo_ibs.gif' %}" alt="">	
-           </div>
-         </div>
-			 	<div class="col-3">
-			 		<div class="item">
-			 			<img src="{% static 'img/logo_ibs.gif' %}" alt="">	
-			 		</div> 
-			 	</div>	
-			 	<div class="col-3">
-			 		<div class="item">
-			 			<img src="{% static 'img/logo_ibs.gif' %}" alt="">	
-			 		</div> 
-			 	</div>
-			 	<div class="col-3">
-			 		<div class="item">
-			 			<img src="{% static 'img/logo_ibs.gif' %}" alt="">	
-			 		</div> 
-			 	</div>	
-			 	<div class="col-3">
-			 		<div class="item">
-			 			<img src="{% static 'img/logo_ibs.gif' %}" alt="">	
-			 		</div> 
-			 	</div>
-			 	<div class="col-3">
-			 		<div class="item">
-			 			<img src="{% static 'img/logo_ibs.gif' %}" alt="">	
-			 		</div> 
-			 	</div>	
-		 	</div>
-		</div>
-	</div>
 </section>
 {% endblock body %}
