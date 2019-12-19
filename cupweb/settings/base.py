@@ -160,6 +160,9 @@ MEDIA_URL = '/media/'
 # Wagtail settings
 WAGTAIL_SITE_NAME = "Center for Underground Physics"
 
+WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024
+WAGTAILIMAGES_MAX_IMAGE_PIXELS = 128000000 * 2 # Twice of default value
+
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = 'https://cupweb.ibs.re.kr'

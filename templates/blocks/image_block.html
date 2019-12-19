@@ -1,6 +1,7 @@
 {% load wagtailimages_tags %}
 
 <figure>
-    {% image self.image fill-600x600 %}
-    <figcaption>{{ self.caption }} - {{ self.attribution }}</figcaption>
+  {% image self.image original as img %}
+  <img src="{{ img.url }}" class="img-fluid">
+  <figcaption>{{ self.caption }}</figcaption>
 </figure>
