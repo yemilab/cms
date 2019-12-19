@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.db import models
 from django.shortcuts import redirect, render
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
@@ -125,11 +126,26 @@ class BlogIndexPage(RoutablePageMixin, Page):
     def children(self):
         return self.get_children().specific().live()
 
+    def get_posts(self, tag=None):
+        posts = BlogPage.objects.live().descendant_of(self).order_by('-date_published')
+        if tag:
+            posts = posts.filter(tags=tag)
+        return posts
+
+    def paginate(self, request, *args):
+        page = request.GET.get('page')
+        paginator = Paginator(self.get_posts(), 12)
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+        return pages
+
     def get_context(self, request):
         context = super(BlogIndexPage, self).get_context(request)
-        context['posts'] = BlogPage.objects.descendant_of(
-            self).live().order_by(
-            '-date_published')
+        context['posts'] = self.paginate(request, self.get_posts())
         return context
 
     @route(r'^tags/$', name='tag_archive')
@@ -150,21 +166,15 @@ class BlogIndexPage(RoutablePageMixin, Page):
         }
         return render(request, 'blog/blog_index_page.html', context)
 
-    def serve_preview(self, request, mode_name):
-        return self.serve(request)
-
-    def get_posts(self, tag=None):
-        posts = BlogPage.objects.live().descendant_of(self)
-        if tag:
-            posts = posts.filter(tags=tag)
-        return posts
-
     def get_child_tags(self):
         tags = []
         for post in self.get_posts():
             tags += post.get_tags
         tags = sorted(set(tags))
         return tags
+
+    def serve_preview(self, request, mode_name):
+        return self.serve(request)
 
 
 class TweetPage(Page):
@@ -210,7 +220,21 @@ class TweetIndexPage(Page):
 
     subpage_types = ['TweetPage']
 
+    def get_tweets(self):
+        return TweetPage.objects.descendant_of(self).live().order_by('-date_published')
+
+    def paginate(self, request, *args):
+        page = request.GET.get('page')
+        paginator = Paginator(self.get_tweets(), 12)
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+        return pages
+
     def get_context(self, request):
         context = super(TweetIndexPage, self).get_context(request)
-        context['tweets'] = TweetPage.objects.descendant_of(self).live().order_by('-date_published')
+        context['tweets'] = self.paginate(request, self.get_tweets())
         return context

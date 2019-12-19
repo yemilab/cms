@@ -7,27 +7,39 @@
   <article class="row list-item loop-item">
   	<div class="col-md-5 image">
       {% if blog.cover_image != None %}
-      {% image blog.cover_image width-640 as image %}
+      {% image blog.cover_image fill-640x640 as image %}
       <img src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" class="img-fluid" />
       {% endif %}
   	</div>
   	<div class="col-md-7 text">
   		<h5 class="entry-title">
         <a href="{% pageurl blog %}">{{ blog.title }}</a> 
-  		</h5>
-  		<p>{{ blog.description|truncatewords:15 }}</p>
-  		<p class="meta"> 
+      </h5>
+      <p><strong>{{ blog.subtitle }}</strong></p>
+  		<p>{{ blog.description }}</p>
+  		<p class="meta">
         {% if blog.date_published %}
         <span class="date">{{ blog.date_published }}</span>
         {% endif %}
+        {% if blog.authors|length > 0 %}
   			<span>by 
         {% for author in blog.authors %}
           {{ author }}{% if not forloop.last %}, {% endif %}
         {% endfor %}
-  			</span>
+        </span>
+        {% endif %}
   		</p>
   	</div>
   </article><!-- #post-## -->
   {% endfor %}
+{% endif %}
+{% if posts.paginator.count > 1 %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+        {% include "includes/pagination.html" with subpages=posts %}
+        </div>
+    </div>
+</div>
 {% endif %}
 {% endblock content %}

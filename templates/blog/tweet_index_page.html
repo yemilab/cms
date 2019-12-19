@@ -3,12 +3,26 @@
 
 {% block content %}
 {% if tweets %}
+  <div class="row">
   {% for tweet in tweets %}
-  <article class="row list-item loop-item">
-  	<div class="text">
-      {{ tweet.body|richtext }}
-  	</div>
-  </article><!-- #post-## -->
+    <div style="width: 18rem; padding: 2px;">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-text">{{ tweet.body|richtext }}</p>
+          <a href="{% pageurl tweet %}" class="card-link">Card link</a>
+        </div>
+      </div>  
+    </div>
   {% endfor %}
+  </div>
+{% endif %}
+{% if tweets.paginator.count > 1 %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+        {% include "includes/pagination.html" with subpages=tweets %}
+        </div>
+    </div>
+</div>
 {% endif %}
 {% endblock content %}
