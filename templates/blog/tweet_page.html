@@ -2,6 +2,8 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
-<h3>{{ page.title }}</h3>
+<div class="page-title">
+  <h2>{{ page.title }}</h2>
+</div>
 {{ page.body|richtext }}
 {% endblock content %}

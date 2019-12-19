@@ -2,10 +2,13 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
+<div class="page-title">
+  <h2>{{ page.title }}</h2>
+</div>
 <div class="page-overview">
   <div class="row">
     <div class="col-md-6">
-      {% image page.cover_photo max-640x640 as photo %}
+      {% image page.cover_photo fill-640x640 as photo %}
       <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" class="img-fluid" />
     </div>
     <div class="col-md-6">

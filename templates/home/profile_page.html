@@ -2,12 +2,45 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
-<p>{{ person.first_name }} {{ person.last_name }}</p>
+<div class="page-title">
+  {% if person.name != None %}
+  <h2>{{ person.name }} ({{ person.first_name }} {{ person.last_name }})</h2>
+  {% else %}
+  <h2>{{ person.first_name }} {{ person.last_name }}</h2>
+  {% endif %}
+</div>
+
+<div class="row">
+<div class="col-md-3 image">
+  {% if person.photo != None %}
+  <div class="people_image">
+    {% image person.photo fill-150x200 as photo %}
+    <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" />
+  </div>
+  {% endif %}
+  <div class="people_profile">
+    <p class="people_team">
+      {{ person.description }}
+    </p>
+  </div>
+  <div class="people_contact">
+    {% if person.email|length > 0 %}
+    E-mail: <a href="mailto:{{ person.email }}">{{person.email}}</a>
+    {% endif %}
+  </div>
+</div>
+<div class="col-md-9 text">
+    <div class="people_information">
+      {{ person.information|richtext }}
+    </div>
+</div>
+</div>
+
 {% if presentations %}
 <h3>Presentations</h3>
 <ul>
   {% for presentation in presentations %}
-  <li><a href="{% pageurl presentation %}">{{ presentation.title }}</a></li>
+  <li><a href="{% pageurl presentation %}">{{ presentation.title }}</a> - {{ presentation.meeting }}</li>
   {% endfor %}  
 </ul>
 {% endif %}

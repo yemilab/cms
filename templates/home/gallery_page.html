@@ -2,7 +2,9 @@
 {% load wagtailimages_tags gallery_tags %}
 
 {% block content %}
-<h2>{{ page.title }}</h2>
+<div class="page-title">
+  <h2>{{ page.title }}</h2>
+</div>
 <p>Date: {{ page.date_published }}</p>
 {% gallery page.collection %}
 {% endblock content %}

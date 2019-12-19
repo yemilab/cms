@@ -2,6 +2,9 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags wagtailroutablepage_tags %}
 
 {% block content %}
+<div class="page-title">
+  <h2>{{ self.tr_title }}</h2>
+</div>
 {% if page.view_type == 'list' %}
 {% for member in page.members %}
 <article class="row people-item loop-item" id="post-1304">

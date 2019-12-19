@@ -2,6 +2,9 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
+<div class="page-title">
+  <h2>{{ page.title }}</h2>
+</div>
 {% if galleries %}
 <div class="row">
   {% for gallery in galleries %}

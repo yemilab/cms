@@ -2,6 +2,9 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
+<div class="page-title">
+  <h2>{{ page.tr.title }}</h2>
+</div>
 {% if careers %}
   {% for career in careers %}
   <article class="row list-item loop-item list-icon-item">

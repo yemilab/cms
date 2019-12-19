@@ -2,6 +2,9 @@
 {% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
 
 {% block content %}
+<div class="page-title">
+  <h2>{{ page.tr_title }}</h2>
+</div>
 <form action="{% pageurl self %}" class="form-inline">
   <div class="form-row align-items-center">
     <label class="my-1 mr-2" for="inlineFormYearSelect">Year</label>
