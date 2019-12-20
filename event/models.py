@@ -110,7 +110,7 @@ class EventsIndexPage(Page):
             year = datetime.now().year
             events = events.filter(start__year=year)
         context['events'] = events.order_by('-start')
-        context['years'] = range(datetime.now().year, 2012, -1)
+        context['years'] = range(datetime.now().year+1, 2012, -1)
         context['selected_year'] = year
         return context
 
