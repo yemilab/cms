@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.db import models
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import redirect, render
 
 from modelcluster.fields import ParentalKey
 from modelcluster.contrib.taggit import ClusterTaggableManager
@@ -14,6 +15,7 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.documents.edit_handlers import DocumentChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from home.custom_fields import TranslatedField
 
@@ -413,3 +415,27 @@ class ThesesIndexPage(Page):
         context['years'] = range(datetime.now().year, 2012, -1)
         context['selected_year'] = thesis_year
         return context
+
+
+class JournalIndexPage(RoutablePageMixin, Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
+    ]
+
+    def get_context(self, request):
+        context = super(JournalIndexPage, self).get_context(request)
+        context['journals'] = Journal.objects.all().order_by('title')
+        return context
+
+    @route(r'^byid/([\d]+)/$', name='id')
+    def journal_byid(self, request, id):
+        context = super(JournalIndexPage, self).get_context(request)
+        context['journal'] = Journal.objects.get(id=id)
+        context['papers'] = PaperPage.objects.live().filter(journal__id=id)
+        return render(request, 'publication/journal_index_page.html', context)

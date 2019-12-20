@@ -1,0 +1,20 @@
+{% extends "content.html" %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags %}
+
+{% block content %}
+{% if journals == None %}
+<h2>{{ journal.title }}</h2>
+<ul>
+  {% for paper in papers %}
+  <li><a href="{% pageurl paper %}">{{ paper.title }}</a></li>
+  {% endfor %}
+</ul>
+{% else %}
+<h2>Journals</h2>
+<ul>
+  {% for journal in journals %}
+  <li><a href="{% slugurl 'journal' %}byid/{{ journal.id }}">{{ journal.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock content %}
