@@ -3,6 +3,7 @@ from wagtail.contrib.modeladmin.options import (
 )
 from .models import Person, HomeSlider
 from publication.models import Journal
+from blog.models import TweetPage
 
 '''
 N.B. To see what icons are available for use in Wagtail menus and StreamField block types,
@@ -43,9 +44,16 @@ class HomeSliderModelAdmin(ModelAdmin):
     list_display = ('title', 'subtitle', 'description', 'date_published')
     ordering = ('-date_published', )
 
+class TweetPageModelAdmin(ModelAdmin):
+    model = TweetPage
+    menu_label = 'Physics News'
+    menu_icon = 'fa-twitter'
+    list_display = ('title', 'date_published')
+    ordering = ('-date_published', )
 
 # When using a ModelAdminGroup class to group several ModelAdmin classes together,
 # you only need to register the ModelAdminGroup class with Wagtail:
 modeladmin_register(PeopleModelAdmin)
 modeladmin_register(JournalModelAdmin)
 modeladmin_register(HomeSliderModelAdmin)
+modeladmin_register(TweetPageModelAdmin)
