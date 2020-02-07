@@ -20,6 +20,8 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from wagtail.api import APIField
+from wagtail.api.v2.views import BaseAPIViewSet
 
 from .blocks import BaseStreamBlock
 from .custom_fields import TranslatedField
@@ -71,6 +73,16 @@ class Person(ClusterableModel):
         verbose_name_plural = 'People'
 
 
+class PersonAPIEndpoint(BaseAPIViewSet):
+    model = Person
+    body_fields = BaseAPIViewSet.body_fields + [
+        'name'
+    ]
+    listing_default_fields = BaseAPIViewSet.listing_default_fields + [
+        'name'
+    ]
+
+
 class ProfilePage(RoutablePageMixin, Page):
     title_ko = models.CharField("Title (Korean)", max_length=255)
     tr_title = TranslatedField(
@@ -96,11 +108,17 @@ class PersonPeopleIndexRelationship(Orderable, models.Model):
     page = ParentalKey(
         'PeopleIndexPage', related_name='peopleindex_person_relationship', on_delete=models.CASCADE
     )
+
     person = models.ForeignKey(
         'Person', related_name='person_peopleindex_relationship', on_delete=models.CASCADE
     )
+
     panels = [
         SnippetChooserPanel('person')
+    ]
+
+    api_fields = [
+        APIField('person')
     ]
 
 
@@ -134,6 +152,10 @@ class PeopleIndexPage(Page):
             panels=None
         ),
         FieldPanel('view_type')
+    ]
+
+    api_fields = [
+        APIField('peopleindex_person_relationship')
     ]
 
     def members(self):

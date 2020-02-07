@@ -15,6 +15,7 @@ from wagtail.core.models import Page, Orderable
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.api import APIField
 
 from home.blocks import BaseStreamBlock
 from home.custom_fields import TranslatedField
@@ -188,6 +189,10 @@ class TweetPage(Page):
         FieldPanel('date_published'),
     ]
 
+    api_fields = [
+        APIField('body'),
+        APIField('date_published'),
+    ]
 
     parent_page_types = ['TweetIndexPage']
     subpage_types = []
