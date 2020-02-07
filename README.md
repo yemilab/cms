@@ -17,3 +17,9 @@ docker-compose up --build
 pip install -r requirements.txt
 python manage.py runserver
 ```
+
+```bash
+docker-compose stop
+docker-compose up --build
+docker-compose start
+```
