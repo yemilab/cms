@@ -1,0 +1,13 @@
+{% extends "content.html" %}
+{% load static wagtailcore_tags navigation_tags wagtailimages_tags wagtailroutablepage_tags %}
+
+{% block content %}
+<div class="page-title">
+  <h2>{{ self.tr_title }}</h2>
+</div>
+<ul>
+  {% for member in page.members %}
+  <li><a href="{% slugurl 'profile' %}byid/{{ member.id }}">{% if member.name != None %}{{ member.name }} ({{ member.first_name }} {{ member.last_name }}){% else %}{{ member.first_name }} {{ member.last_name }}{% endif %}</a></li>
+  {% endfor %}
+</ul>
+{% endblock content %}

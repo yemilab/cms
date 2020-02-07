@@ -140,7 +140,6 @@ class PeopleIndexPage(Page):
         'description',
         'description_ko',
     )
-    view_type = models.CharField(max_length=64, choices=[('list', 'List'), ('simple', 'Simple')], default='list')
 
     content_panels = Page.content_panels + [
         FieldPanel('title_ko'),
@@ -151,7 +150,6 @@ class PeopleIndexPage(Page):
             label="Members(s)",
             panels=None
         ),
-        FieldPanel('view_type')
     ]
 
     api_fields = [
@@ -160,6 +158,62 @@ class PeopleIndexPage(Page):
 
     def members(self):
         return [ n.person for n in self.peopleindex_person_relationship.all() ]
+
+
+class PersonAlumniRelationship(Orderable, models.Model):
+    page = ParentalKey(
+        'AlumniPage', related_name='alumni_person_relationship', on_delete=models.CASCADE
+    )
+
+    person = models.ForeignKey(
+        'Person', related_name='person_alumni_relationship', on_delete=models.CASCADE
+    )
+
+    panels = [
+        SnippetChooserPanel('person')
+    ]
+
+    api_fields = [
+        APIField('person')
+    ]
+
+
+class AlumniPage(Page):
+    title_ko = models.CharField("Title (Korean)", max_length=255)
+    tr_title = TranslatedField(
+        'title',
+        'title_ko',
+    )
+    description = models.TextField(
+        "Description (English)",
+        help_text='Text to describe the page',
+        blank=True)
+    description_ko = models.TextField(
+        "Description (Korean)",
+        help_text='Text to describe the page',
+        blank=True)
+    tr_description = TranslatedField(
+        'description',
+        'description_ko',
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('title_ko'),
+        FieldPanel('description', classname="full"),
+        FieldPanel('description_ko', classname="full"),
+        InlinePanel(
+            'alumni_person_relationship',
+            label="Members(s)",
+            panels=None
+        ),
+    ]
+
+    api_fields = [
+        APIField('alumni_person_relationship')
+    ]
+
+    def members(self):
+        return [ n.person for n in self.alumni_person_relationship.all() ]
 
 
 class FaqPage(Page):
