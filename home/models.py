@@ -76,10 +76,18 @@ class Person(ClusterableModel):
 class PersonAPIEndpoint(BaseAPIViewSet):
     model = Person
     body_fields = BaseAPIViewSet.body_fields + [
-        'name'
+        'first_name',
+        'last_name',
+        'name',
+        'email',
+        'homepage',
     ]
     listing_default_fields = BaseAPIViewSet.listing_default_fields + [
-        'name'
+        'first_name',
+        'last_name',
+        'name',
+        'email',
+        'homepage',
     ]
 
 
